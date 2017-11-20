@@ -5,64 +5,63 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.christian.sifacmovil.AyudanteCrecionBD.AyudanteCreacionBD;
 
 public class ListarClientesActivity extends AppCompatActivity {
-
-    Button btnVolver2, btnBuscar2, btnSalir2;
-    EditText etId2, etNombres2, etTelefono2;
     ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
-
+    ListView lista;
+    View header;
+    AyudanteListViewClientes arregloClientes[];
+    AdaptadorAyudanteListarClientes adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_clientes);
+        lista = (ListView)findViewById(R.id.ListaDeClientes);
+        header=(View) getLayoutInflater().inflate(R.layout.list_header_listarclientes,null);
+        ListarClientes();
+        adapter= new AdaptadorAyudanteListarClientes(this, R.layout.listview_listarclientes,arregloClientes);
+        lista.addHeaderView(header);
+        lista.setAdapter(adapter);
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {@Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView ncliente =(TextView)view.findViewById(R.id.NCliente);
+                TextView direccion =(TextView)view.findViewById(R.id.NombreCliente);
+                Toast.makeText(getApplicationContext(),ncliente.getText()+"\n"+direccion.getText(), Toast.LENGTH_LONG).show();
+           }
+       });
+    }
 
 
+    void ListarClientes(){
 
-        btnVolver2=(Button)findViewById(R.id.btnVolver2);
-        btnBuscar2=(Button)findViewById(R.id.btnBuscar2);
-        btnSalir2=(Button)findViewById(R.id.btnSalir2);
+            SQLiteDatabase db=conn.getReadableDatabase();
 
+            String DatosAdicionales="";
+            String NCliente="";
+            Cursor cursor=db.rawQuery("SELECT * FROM "+AyudanteCreacionBD.TABLA_CLIENTE,null);
+            int COntador=0;
+            AyudanteListViewClientes DatoDelCliente;
+            arregloClientes= new AyudanteListViewClientes[cursor.getCount()];
+            while (cursor.moveToNext()){
+                DatosAdicionales="";
+                NCliente=cursor.getInt(0)+"";
+                DatosAdicionales+=cursor.getString(1)+"\n";
+                DatosAdicionales+=cursor.getString(2)+"\n";
+                DatosAdicionales+=cursor.getString(3)+"\n";
+                DatoDelCliente= new AyudanteListViewClientes(R.drawable.ic_launcher,NCliente,DatosAdicionales);
+                arregloClientes[COntador]=DatoDelCliente;
 
-
-        etId2=(EditText)findViewById(R.id.etId2);
-        etNombres2=(EditText)findViewById(R.id.etNombres2);
-        etTelefono2=(EditText)findViewById(R.id.etTelefono2);
-
-
-        btnBuscar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                try {
-                    SQLiteDatabase db =conn.getReadableDatabase();
-                    //especifica cuales columnas de la base usaremos despues de la consulta
-                    String[] projection = {
-                            AyudanteCreacionBD.CAMPO_NOMBRE_LOCAL,
-                            AyudanteCreacionBD.CAMPO_DIRECCION
-                    };
-                    String[] argsel = { etId2.getText().toString() };
-                    //nos consulta compara la coluna id con lo que esta en la caja de texto
-                    Cursor c=db.query(AyudanteCreacionBD.TABLA_CLIENTE, projection, AyudanteCreacionBD.CAMPO_ID_CLIENTE+"=?",argsel,null,null,null);
-
-                    c.moveToFirst();
-                    etNombres2.setText(c.getString(0));
-                    etTelefono2.setText(c.getString(1));
-
-
-
-                }catch (Exception e){
-                    Toast.makeText(getApplicationContext(),"No existe ningún registro con ese id", Toast.LENGTH_LONG).show();
-                }
+                COntador++;
             }
-        });
-
-
 
     }
 }

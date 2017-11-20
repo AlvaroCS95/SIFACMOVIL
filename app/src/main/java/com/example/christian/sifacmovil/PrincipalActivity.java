@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.christian.sifacmovil.AyudanteCrecionBD.AyudanteCreacionBD;
@@ -24,14 +25,13 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import com.example.christian.sifacmovil.AyudanteCrecionBD.AyudanteCreacionBD;
 public class PrincipalActivity extends AppCompatActivity {
 
     Button btIngresarCliente, consulta;
     AyudanteConeccionMySql ayudanteConeccionMySql= new AyudanteConeccionMySql();
-
+    EditText edit;
     ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +41,13 @@ public class PrincipalActivity extends AppCompatActivity {
 
         btIngresarCliente= (Button) findViewById(R.id.btIngresarClientes);
         consulta= (Button) findViewById(R.id.consulta);
+        edit= (EditText) findViewById(R.id.prueba);
 
         btIngresarCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                new AyudanteListarClientes().execute("http://192.168.43.199:8080/SifacMyF/listarClientes.php");
+                new AyudanteListarClientes().execute("http://10.234.203.12:8080/SifacMyF/listarClientes.php");
             }
         });
 
@@ -79,28 +80,36 @@ public class PrincipalActivity extends AppCompatActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            SQLiteDatabase db =conn.getWritableDatabase();
 
+
+            SQLiteDatabase db=conn.getWritableDatabase();
             JSONArray ja = null;
             try {
                 ja = new JSONArray(result);
-                //Object jsonObject =JSONValue.parse(ja.toString());
-                for(int contadorArray=0;contadorArray<ja.length();contadorArray++){
-                    JSONObject json = ja.getJSONObject(contadorArray);
+                int totalRegistros=ja.length();
+                String valor="";
+                String ayudantedireccion="";
+                String recojevalor="";
+                String[] totalpalabras = new String[totalRegistros];
 
-                //Toast.makeText(getApplicationContext(), ja.getString(1)+"\n"+ja.getString(5), Toast.LENGTH_LONG).show();
-                    ContentValues valores = new ContentValues();
-                    String valor=json.optString("IdCliente");
-                    //valores.put(AyudanteCreacionBD.CAMPO_ID_CLIENTE, Integer.parseInt(valor));
-                   // valores.put(AyudanteCreacionBD.CAMPO_NIVEL, json.optString("Nivel"));
-                  //  valores.put(AyudanteCreacionBD.CAMPO_NOMBRE_LOCAL, json.optString("NombreLocal"));
-                   // valores.put(AyudanteCreacionBD.CAMPO_DIRECCION, json.optString("Direccion"));
 
-                   // Long IdInser = db.insert(AyudanteCreacionBD.TABLA_CLIENTE, AyudanteCreacionBD.CAMPO_ID_CLIENTE,valores);
-                    //(Utilidades.TABLA_USUARIO,Utilidades.CAMPO_ID,values
-                    Toast.makeText(getApplicationContext(), json.get("IdCliente").toString(), Toast.LENGTH_LONG).show();
+                for(int contadorArray=0;contadorArray<totalRegistros;contadorArray++){
 
+                    valor=ja.getString(Integer.parseInt(String.valueOf(contadorArray)));
+                    String[] ayudante=valor.split(",");
+                    ContentValues values=new ContentValues();
+                    values.put(AyudanteCreacionBD.CAMPO_ID_CLIENTE,ayudante[0].replace("[",""));
+                    values.put(AyudanteCreacionBD.CAMPO_NOMBRE_LOCAL,ayudante[1].replace("\"",""));
+                    values.put(AyudanteCreacionBD.CAMPO_NIVEL,ayudante[2].replace("\"",""));
+                    ayudantedireccion=ayudante[3].replace("]","");
+                    values.put(AyudanteCreacionBD.CAMPO_DIRECCION,ayudantedireccion.replace("\"",""));
+                    Long idResultante=db.insert(AyudanteCreacionBD.TABLA_CLIENTE,null,values);
+                    recojevalor+="Se ingreso id: "+ayudante[0].replace("[","")+"\n";
                 }
+
+
+
+                Toast.makeText(getApplicationContext(),recojevalor+"", Toast.LENGTH_LONG).show();
                 //db.close();
             } catch (JSONException e) {
                 e.printStackTrace();

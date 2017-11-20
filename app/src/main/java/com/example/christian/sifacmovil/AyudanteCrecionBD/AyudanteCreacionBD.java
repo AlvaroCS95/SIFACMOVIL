@@ -24,7 +24,7 @@ public class AyudanteCreacionBD {
 
 
     public static final String CREAR_TABLA_CLIENTE="CREATE TABLE " +
-            ""+TABLA_CLIENTE+" ("+CAMPO_ID_CLIENTE+" INTEGER PRIMARY KEY AUTOINCREMENT, "
+            ""+TABLA_CLIENTE+" ("+CAMPO_ID_CLIENTE+" INTEGER, "
             +CAMPO_NIVEL+" TEXT, "+CAMPO_NOMBRE_LOCAL+" TEXT, "+CAMPO_DIRECCION+" TEXT)";
 
     //Constantes campos tabla Producto
@@ -46,7 +46,7 @@ public class AyudanteCreacionBD {
 
 
     public static final String CREAR_TABLA_TIPO_PAGO="CREATE TABLE " +
-            ""+TABLA_TIPO_PAGO+" ("+CAMPO_ID_TIPO_PAGO+" TEXT PRIMARY KEY AUTOINCREMENT, "
+            ""+TABLA_TIPO_PAGO+" ("+CAMPO_ID_TIPO_PAGO+" INTEGER PRIMARY KEY AUTOINCREMENT, "
             +CAMPO_TIPO_PAGO+" TEXT)";
 
     //Constantes campos tabla TipoVenta
@@ -56,7 +56,7 @@ public class AyudanteCreacionBD {
 
 
     public static final String CREAR_TABLA_TIPO_VENTA="CREATE TABLE " +
-            ""+TABLA_TIPO_VENTA+" ("+CAMPO_ID_TIPO_VENTA+" TEXT PRIMARY KEY AUTOINCREMENT, "
+            ""+TABLA_TIPO_VENTA+" ("+CAMPO_ID_TIPO_VENTA+" INTEGER PRIMARY KEY AUTOINCREMENT, "
             +CAMPO_TIPO_VENTA+" TEXT)";
 
     //Constantes campos tabla FacturaVenta
@@ -72,7 +72,7 @@ public class AyudanteCreacionBD {
 
 
     public static final String CREAR_TABLA_FACTURA_VENTA="CREATE TABLE " +
-            ""+TABLA_FACTURA_VENTA+" ("+CAMPO_NUMERO_FACTURA+" TEXT PRIMARY KEY AUTOINCREMENT, "
+            ""+TABLA_FACTURA_VENTA+" ("+CAMPO_NUMERO_FACTURA+" INTEGER PRIMARY KEY AUTOINCREMENT, "
             +CAMPO_TIPO_VENTA_VENTA+" INTEGER, "+CAMPO_ID_USUARIO_VENTA+" INTEGER, "+CAMPO_ID_CLIENTE_VENTA+" INTEGER, " +
             CAMPO_TIPO_PAGO_VENTA+" INTEGER, "+CAMPO_N_REFERENCIA+" TEXT, "+CAMPO_MONTO_TOTAL+" FLOAT, "+CAMPO_FECHA+" DATETIME)";
 
@@ -88,7 +88,7 @@ public class AyudanteCreacionBD {
 
 
     public static final String CREAR_TABLA_DETALLE_FACTURA_VENTA="CREATE TABLE " +
-            ""+TABLA_DETALLE_FACTURA_VENTA+" ("+CAMPO_ID_DETALLE_FACTURA+" TEXT PRIMARY KEY AUTOINCREMENT, "
+            ""+TABLA_DETALLE_FACTURA_VENTA+" ("+CAMPO_ID_DETALLE_FACTURA+" INTEGER PRIMARY KEY AUTOINCREMENT, "
             +CAMPO_NUMERO_FACTURA_DETALLE+" INTEGER, "+CAMPO_ID_PRODUCTO_DETALLE+" INTEGER, "+CAMPO_CANTIDAD+" FLOAT, " +
             CAMPO_DESCUENTO+" FLOAT, "+CAMPO_PRECIO_VENTA+" FLOAT)";
 

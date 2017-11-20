@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                new AyudanteConeccionLogin().execute("http://192.168.43.199:8080/SifacMyF/login.php?nombreUsuario="+etNombreUsuario.getText().toString()+"&pass="+etContraseña.getText().toString());
+                new AyudanteConeccionLogin().execute("http://10.234.203.12:8080/SifacMyF/login.php?nombreUsuario="+etNombreUsuario.getText().toString()+"&pass="+etContraseña.getText().toString());
             }
         });
 

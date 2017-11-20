@@ -5,71 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
     tools:context="com.example.christian.sifacmovil.ListarClientesActivity">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ingrese el id y luego de clic en buscar"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/tvTitulo2"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Id a buscar"
-            android:id="@+id/etId2"
-            android:layout_below="@+id/tvTitulo2"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre"
-            android:id="@+id/etNombres2"
-            android:layout_below="@+id/etId2"
-            />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Telefono"
-            android:id="@+id/etTelefono2"
-            android:layout_below="@+id/etNombres2"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/etTelefono2"
-
-            >
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Buscar"
-                android:layout_weight="1"
-                android:id="@+id/btnBuscar2"
-                />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Volver"
-                android:layout_weight="1"
-                android:id="@+id/btnVolver2"
-                />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Salir"
-                android:layout_weight="1"
-                android:id="@+id/btnSalir2"
-                />
-
-        </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ListaDeClientes" />
 
 
     </RelativeLayout>
