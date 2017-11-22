@@ -30,13 +30,16 @@ public class AyudanteCreacionBD {
     //Constantes campos tabla Producto
     public static final String TABLA_PRODUCTO="producto";
     public static final String CAMPO_CODIGO_PRODUCTO="codigo_producto";
+    public static final String CAMPO_NOMBRE_PRODUCTO="nombre_producto";
     public static final String CAMPO_EXISTENCIA="existencia";
+    public static final String CAMPO_PRECIO_PRODUCTO="precio_producto";
     public static final String CAMPO_EXCENTO="excento";
 
 
     public static final String CREAR_TABLA_PRODUCTO="CREATE TABLE " +
-            ""+TABLA_PRODUCTO+" ("+CAMPO_CODIGO_PRODUCTO+" TEXT PRIMARY KEY, "
-            +CAMPO_EXISTENCIA+" FLOAT, "+CAMPO_EXCENTO+" TEXT)";
+            ""+TABLA_PRODUCTO+" ("+CAMPO_CODIGO_PRODUCTO+" TEXT PRIMARY KEY, "+
+            CAMPO_NOMBRE_PRODUCTO +" TEXT, "+CAMPO_EXISTENCIA+" FLOAT, "+
+            CAMPO_PRECIO_PRODUCTO+" FLOAT,"+CAMPO_EXCENTO+" TEXT)";
 
 
     //Constantes campos tabla TipoPago

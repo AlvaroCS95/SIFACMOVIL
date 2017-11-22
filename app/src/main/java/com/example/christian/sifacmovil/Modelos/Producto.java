@@ -11,14 +11,13 @@ public class Producto implements Serializable{
     String Nombre;
     float Existencias;
     float Precio;
-
-    boolean exento;
+    String exento;
 
     public Producto() {
     }
 
     public Producto(String Codigo, String Nombre,  float Existencias, float Precio,
-                    boolean exen) {
+                    String exen) {
         this.Codigo = Codigo;
         this.Nombre = Nombre;
         this.Existencias = Existencias;
@@ -42,7 +41,7 @@ public class Producto implements Serializable{
         return Precio;
     }
 
-    public boolean isExento() {
+    public String getExento() {
         return exento;
     }
 
@@ -62,7 +61,7 @@ public class Producto implements Serializable{
         Precio = precio;
     }
 
-    public void setExento(boolean exento) {
+    public void setExento(String exento) {
         this.exento = exento;
     }
 }

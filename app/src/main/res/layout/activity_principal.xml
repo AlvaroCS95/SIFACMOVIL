@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.christian.sifacmovil.PrincipalActivity">
 
 
-    <EditText
-        android:layout_width="329dp"
-        android:layout_height="57dp"
-        android:layout_below="@+id/linear"
-        android:layout_margin="10dp"
-        android:hint="nombres"
-        android:id="@+id/prueba"
-        tools:layout_editor_absoluteY="40dp"
-        tools:layout_editor_absoluteX="16dp" />
 
-    <LinearLayout
-        android:id="@+id/linear"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/btIngresarClientes"
+        android:layout_width="155dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/prueba"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="-2dp"
-        tools:layout_editor_absoluteY="-3dp">
+        android:text="Consultar "
+        tools:layout_editor_absoluteX="99dp"
 
-        <Button
-            android:id="@+id/btIngresarClientes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Consultar "
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="57dp"
+        android:layout_alignTop="@+id/consulta"
 
-        <Button
-            android:id="@+id/consulta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Consultar clientes"
-            tools:layout_editor_absoluteX="161dp"
-            tools:layout_editor_absoluteY="16dp" />
-    </LinearLayout>
+        android:layout_marginRight="9dp"
+        android:layout_marginEnd="9dp" />
+
+    <Button
+        android:id="@+id/consulta"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="Consultar clientes"
+        tools:layout_editor_absoluteX="146dp"
+        tools:layout_editor_absoluteY="449dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="83dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/btIngresarClientes"
+        android:layout_toEndOf="@+id/btIngresarClientes" />
+
+    <Spinner
+        android:id="@+id/ListaProdoctos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="7dp" />
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
