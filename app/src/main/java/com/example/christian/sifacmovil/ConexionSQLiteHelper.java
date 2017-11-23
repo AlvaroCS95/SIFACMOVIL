@@ -1,5 +1,6 @@
 package com.example.christian.sifacmovil;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,6 +23,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(AyudanteCreacionBD.CREAR_TABLA_USUARIO);
+        db.execSQL("INSERT INTO "+AyudanteCreacionBD.TABLA_USUARIO+" (id, nombre, contraseña) VALUES (1,'master','master')");
         db.execSQL(AyudanteCreacionBD.CREAR_TABLA_CLIENTE);
         db.execSQL(AyudanteCreacionBD.CREAR_TABLA_DETALLE_FACTURA_VENTA);
         db.execSQL(AyudanteCreacionBD.CREAR_TABLA_FACTURA_VENTA);

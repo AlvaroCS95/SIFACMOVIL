@@ -6,42 +6,54 @@
     tools:context="com.example.christian.sifacmovil.PrincipalActivity">
 
 
-
     <Button
         android:id="@+id/btIngresarClientes"
-        android:layout_width="155dp"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:text="Consultar "
+        android:background="@color/colorButton"
+        android:textColor="@android:color/white"
+        android:text="@string/IngresarClientesCargas"
         tools:layout_editor_absoluteX="99dp"
-
         tools:layout_editor_absoluteY="57dp"
-        android:layout_alignTop="@+id/consulta"
-
-        android:layout_marginRight="9dp"
-        android:layout_marginEnd="9dp" />
+        android:layout_marginTop="17dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/consulta"
+        android:id="@+id/btEmpezarDia"
         android:layout_width="155dp"
         android:layout_height="wrap_content"
-        android:text="Consultar clientes"
+        android:text="@string/Iniciardia"
         tools:layout_editor_absoluteX="146dp"
+        android:textColor="@android:color/white"
         tools:layout_editor_absoluteY="449dp"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="83dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/btIngresarClientes"
-        android:layout_toEndOf="@+id/btIngresarClientes" />
+        android:background="@color/colorButton"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/btIngresarClientes"
+        android:layout_centerHorizontal="true" />
 
-    <Spinner
-        android:id="@+id/ListaProdoctos"
-        android:layout_width="match_parent"
+<Button
+    android:layout_width="185dp"
+    android:layout_height="wrap_content"
+    android:text="@string/ConsultarInventario"
+    android:layout_marginTop="28dp"
+    android:textColor="@android:color/white"
+    android:layout_below="@+id/btEmpezarDia"
+    android:layout_centerHorizontal="true"
+    android:background="@color/colorButton"
+    android:id="@+id/btInventario" />
+
+    <Button
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="7dp" />
+        android:text="@string/IngresarNuevoUsuario"
+        android:layout_marginTop="26dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorButton"
+        android:layout_below="@+id/btInventario"
+        android:layout_alignRight="@+id/btEmpezarDia"
+        android:layout_alignEnd="@+id/btEmpezarDia"
+        android:id="@+id/btNuevoUsuario"/>
 
 
 </RelativeLayout>

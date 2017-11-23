@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">SIFACMOVIL</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="MensajeContraseña">Contraseña</string>
+    <string name="MensajeNombreUsuario">Nombre Usuario</string>
+    <string name="MensajeInicioLogin">Login Sifac MyF</string>
+    <string name="TextoBotonIngresarLogin">Ingresar</string>
+    <string name="IngresarNuevoUsuario">Usuario Nuevo</string>
+    <string name="IngresarClientesCargas">Ingresar Clientes y Carga</string>
+    <string name="Iniciardia">Empezar Día</string>
+    <string name="TextoListainventario">\tListado de los productos \ncon sus existencias/precios</string>
+    <string name="ActualizarInventario">Actualizar Inventario</string>
+    <string name="ConsultarInventario">Consutar Inventario</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="TexoInformativoNuevoUsuario">Ingrese los siguientes datos del usuario</string>
+    <string name="NuevoNombreUsuario">Nuevo Nombre Usuario</string>
+    <string name="NuevaContraseña">Nueva Contraseña</string>
+    <string name="AceptarNuevoUsuario">Ingresar Usuario</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -35,34 +35,33 @@ import com.example.christian.sifacmovil.Modelos.Producto;
 
 public class PrincipalActivity extends AppCompatActivity {
 
-    Button btIngresarCliente, consulta;
-    Spinner listaDeProductos;
+    Button btIngresarCliente, btempezardia, btnuevousuario, btconsultarinventario;
+
     AyudanteConeccionMySql ayudanteConeccionMySql= new AyudanteConeccionMySql();
-    ArrayList<String> listaProductos;
-    ArrayList<Producto> productosList;
+
     ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        setTitle("Listar CLientes Para iniciar ruta");
+        setTitle("Menu Inicio");
 
-        listaDeProductos=(Spinner)findViewById(R.id.ListaProdoctos);
+
         btIngresarCliente= (Button) findViewById(R.id.btIngresarClientes);
-        consulta= (Button) findViewById(R.id.consulta);
-        consultarListaProductos();
-        ArrayAdapter<CharSequence> adaptador=new ArrayAdapter(this,android.R.layout.simple_spinner_item,listaProductos);
-        listaDeProductos.setAdapter(adaptador);
+        btempezardia= (Button) findViewById(R.id.btEmpezarDia);
+        btnuevousuario= (Button) findViewById(R.id.btNuevoUsuario);
+        btconsultarinventario= (Button) findViewById(R.id.btInventario);
+
         btIngresarCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                new AyudanteListarClientes().execute("http://10.234.203.12:8080/SifacMyF/listarClientes.php");
-                new AyudanteRecogerProductos().execute("http://10.234.203.12:8080/SifacMyF/listarProductosDeRuta.php");
+                new AyudanteListarClientes().execute("http://192.168.43.199:8080/SifacMyF/listarClientes.php");
+                new AyudanteRecogerProductos().execute("http://192.168.43.199:8080/SifacMyF/listarProductosDeRuta.php");
             }
         });
 
-        consulta.setOnClickListener(new View.OnClickListener() {
+        btempezardia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -74,46 +73,32 @@ public class PrincipalActivity extends AppCompatActivity {
                 }
             }
         });
+        btconsultarinventario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-    }
+                try {
+                    Intent ListSong = new Intent(getApplicationContext(), ListarImventarioActivity.class);
+                    startActivity(ListSong);
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
-    private void consultarListaProductos() {
-        SQLiteDatabase db=conn.getReadableDatabase();
+        btnuevousuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        Producto producto=null;
-        productosList =new ArrayList<Producto>();
-        ///select * from usuarios
-        Cursor cursor=db.rawQuery("SELECT * FROM "+ AyudanteCreacionBD.TABLA_PRODUCTO,null);
+                try {
+                    Intent ListSong = new Intent(getApplicationContext(), NuevoUsuarioActivity.class);
+                    startActivity(ListSong);
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
-        while (cursor.moveToNext()){
-            producto=new Producto();
-            //Producto.set(cursor.getInt(0));
-            producto.setCodigo(cursor.getString(0));
-            producto.setNombre(cursor.getString(1));
-            producto.setExistencias(cursor.getFloat(2));
-            producto.setPrecio(cursor.getFloat(3));
-            producto.setExento(cursor.getString(4));
-
-            Log.i("id",producto.getCodigo().toString());
-            Log.i("Nombre",producto.getNombre().toString());
-            Log.i("Existencias", String.valueOf(producto.getExistencias()));
-            Log.i("Precio",String.valueOf(producto.getPrecio()));
-            Log.i("Exento",producto.getExento().toString());
-
-
-            productosList.add(producto);
-
-        }
-        obtenerListaProductos();
-    }
-
-    private void obtenerListaProductos() {
-        listaProductos=new ArrayList<String>();
-        listaProductos.add("Seleccione");
-
-        for(int i=0;i<productosList.size();i++){
-            listaProductos.add(productosList.get(i).getCodigo()+" - "+productosList.get(i).getNombre()+" - "+productosList.get(i).getExistencias());
-        }
 
     }
 

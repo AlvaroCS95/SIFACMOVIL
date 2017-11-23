@@ -13,7 +13,7 @@ public class AyudanteCreacionBD {
 
     public static final String CREAR_TABLA_USUARIO="CREATE TABLE " +
             ""+TABLA_USUARIO+" ("+CAMPO_ID_USUARIO+" " +
-            "INTEGER, "+CAMPO_NOMBRE_USUARIO+" TEXT,"+CAMPO_CONTRASEÑA+" TEXT)";
+            "INTEGER PRIMARY KEY, "+CAMPO_NOMBRE_USUARIO+" TEXT,"+CAMPO_CONTRASEÑA+" TEXT) ";
 
     //Constantes campos tabla Clientes
     public static final String TABLA_CLIENTE="cliente";

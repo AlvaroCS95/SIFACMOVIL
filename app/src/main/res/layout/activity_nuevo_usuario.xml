@@ -1,49 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.christian.sifacmovil.LoginActivity">
+    tools:context="com.example.christian.sifacmovil.NuevoUsuarioActivity">
+
 
     <TextView
-        android:id="@+id/tvLogin"
+        android:id="@+id/tvNuevoUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login Sifac MyF"
+        android:text="@string/TexoInformativoNuevoUsuario"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/btIngresar"
-        android:layout_alignEnd="@+id/btIngresar"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <EditText
-        android:id="@+id/etNombreUsuario"
+        android:id="@+id/etNombreUsuarioNuevo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="\t\t\t\t\t\t\t\t\t\t\t\tNombre Usuario"
-        android:layout_below="@+id/tvLogin"
+        android:hint="@string/NuevoNombreUsuario"
+        android:layout_below="@+id/tvNuevoUsuario"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="28dp" />
 
     <EditText
-        android:id="@+id/etContraseña"
+        android:id="@+id/etContraseñaNueva"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="\t\t\t\t\t\t\t\t\t\t\t\t\tContraseña"
+        android:hint="@string/NuevaContraseña"
         android:inputType="textPassword"
-        android:layout_alignTop="@+id/etNombreUsuario"
+        android:layout_alignTop="@+id/etNombreUsuarioNuevo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="74dp" />
 
     <Button
-        android:id="@+id/btIngresar"
+        android:id="@+id/btIngresarNuevoUSuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingresar"
-        android:layout_below="@+id/etContraseña"
+        android:text="@string/AceptarNuevoUsuario"
+        android:textColor="@android:color/white"
+        android:background="@color/colorButton"
+        android:layout_below="@+id/etContraseñaNueva"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />
 

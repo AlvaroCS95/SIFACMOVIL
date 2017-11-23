@@ -3,49 +3,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@android:style/Theme.Material.Light"
-    tools:context="com.example.christian.sifacmovil.LoginActivity">
+    tools:context="com.example.christian.sifacmovil.IngresarActivity">
 
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login Sifac MyF"
-        android:layout_alignLeft="@+id/etNombreUsuario"
-        android:layout_alignStart="@+id/etNombreUsuario"
-        android:layout_marginLeft="120dp"
-        android:layout_marginStart="120dp" />
+        android:text="@string/MensajeInicioLogin"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/btIngresar"
+        android:layout_alignEnd="@+id/btIngresar"
+        android:layout_marginTop="25dp" />
 
 
     <EditText
         android:id="@+id/etNombreUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre Usuario"
-        android:layout_marginTop="11dp"
+        android:hint="@string/MensajeNombreUsuario"
         android:layout_below="@+id/tvLogin"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp" />
 
     <EditText
         android:id="@+id/etContraseña"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/etNombreUsuario"
-        android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="textPassword" />
+        android:hint="@string/MensajeContraseña"
+        android:inputType="textPassword"
+        android:layout_alignTop="@+id/etNombreUsuario"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="74dp" />
 
     <Button
         android:id="@+id/btIngresar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingresar"
+        android:text="@string/TextoBotonIngresarLogin"
+        android:textColor="@android:color/white"
+        android:background="@color/colorButton"
         android:layout_below="@+id/etContraseña"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="85dp" />
+        android:layout_marginTop="31dp" />
 
 </RelativeLayout>
