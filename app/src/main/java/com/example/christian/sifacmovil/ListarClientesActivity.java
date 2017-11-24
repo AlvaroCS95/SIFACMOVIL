@@ -42,6 +42,7 @@ public class ListarClientesActivity extends AppCompatActivity {
                 ListSong.putExtra("NCliente", ncliente.getText().toString());
                 ListSong.putExtra("Nombre", ayudante[0]);
                 startActivity(ListSong);
+                finish();
             }catch (Exception e){
                 Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
             }

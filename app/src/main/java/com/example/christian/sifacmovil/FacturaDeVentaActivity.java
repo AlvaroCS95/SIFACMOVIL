@@ -1,6 +1,8 @@
 package com.example.christian.sifacmovil;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -39,6 +41,8 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
     ArrayList<String> listatipoVenta;
     TableLayout DetalleFacturaVenta;
     TableRow row;
+    Float cantidadparacomparar=Float.valueOf(0);
+    Float cantidadparacompararUsuario=Float.valueOf(0);
     EditText etCantidad, etDescuento,TotalPagaCliente;
     String TotalAPAgarPorElCliente="";
     Float precioProducto= Float.valueOf(0);
@@ -107,9 +111,11 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
                 }else{
                     final String[] producto=listaDeProductos.getItemAtPosition(listaDeProductos.getSelectedItemPosition()).toString().split("-");
-                   if(ExiteProducto(producto[0].toString(),row)==true){
+                    cantidadparacomparar=Float.parseFloat(producto[2]);
+                    cantidadparacompararUsuario=Float.parseFloat(etCantidad.getText().toString());
+                   if(ExiteProducto(producto[0].toString(),row)==true||cantidadparacomparar<cantidadparacompararUsuario){
                        AlertDialog.Builder errorExiteProducto= new AlertDialog.Builder(FacturaDeVentaActivity.this);
-                       errorExiteProducto.setMessage("Ya Existe este Producto por favor ingrese otro, o eliminelo y vuelvalo a agregar")
+                       errorExiteProducto.setMessage("No puede ingresar un producto que ya este, o vender mas de lo que esta en inventario")
                                .setCancelable(false)
                                .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
                                    @Override
@@ -229,13 +235,16 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                 .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        SQLiteDatabase db=conn.getReadableDatabase();
 
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(AyudanteCreacionBD.CAMPO_NOMBRE_PRODUCTO,"Bisteck de cerdo"); //These Fields should be your String values of actual column names
+                                        cv.put(AyudanteCreacionBD.CAMPO_EXISTENCIA,200);
 
-
-
-
-
-
+                                        db.update(AyudanteCreacionBD.TABLA_PRODUCTO, cv, AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+"=1", null);
+                                        Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
+                                        startActivity(ListSong);
+                                        finish();
                                     }
                                 }).setNegativeButton("No",new DialogInterface.OnClickListener() {
                             @Override
