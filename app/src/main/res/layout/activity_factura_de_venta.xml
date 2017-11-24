@@ -184,7 +184,7 @@
         android:layout_toEndOf="@+id/prueba234" />
 
     <EditText
-        android:id="@+id/etMonto"
+        android:id="@+id/etMontodePagoTotalCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/scrollView2"
