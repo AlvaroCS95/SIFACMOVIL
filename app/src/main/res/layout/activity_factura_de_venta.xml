@@ -37,7 +37,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/CodigoNombrecliente"
         android:layout_marginTop="9dp"
-        android:text="TIpo Pago" />
+        android:text="TIpo Venta" />
 
     <Spinner
         android:id="@+id/spinnerTipoPago"
@@ -53,10 +53,10 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tipo Venta"
-        android:layout_alignTop="@+id/spinnerTipoPago"
         android:layout_alignLeft="@+id/btAgregarProducto"
-        android:layout_alignStart="@+id/btAgregarProducto" />
+        android:layout_alignStart="@+id/btAgregarProducto"
+        android:layout_alignTop="@+id/spinnerTipoPago"
+        android:text="Tipo Pago" />
 
     <Spinner
         android:id="@+id/spinnerITpoVenta"
@@ -90,9 +90,9 @@
         android:id="@+id/spinnerListaProductos"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/spinnerPlazoDías"
+        android:layout_below="@+id/etNReferencia"
+        android:layout_alignLeft="@+id/etNReferencia"
+        android:layout_alignStart="@+id/etNReferencia"
         android:layout_marginTop="8dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -113,23 +113,22 @@
         android:id="@+id/etDescuento"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/spinnerListaProductos"
-        android:layout_marginTop="7dp"
         android:ems="10"
         android:hint="Descuento"
-        android:inputType="textPersonName|number" />
+        android:inputType="textPersonName|number"
+        android:layout_below="@+id/spinnerListaProductos"
+        android:layout_alignRight="@+id/MontoTotalAPagar"
+        android:layout_alignEnd="@+id/MontoTotalAPagar" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
         android:text="MontoTotal"
         android:layout_below="@+id/etCantidad"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignLeft="@+id/spinnerListaProductos"
+        android:layout_alignStart="@+id/spinnerListaProductos"
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/MontoTotalAPagar"
@@ -137,39 +136,41 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView7"
         android:layout_alignBottom="@+id/textView7"
-        android:layout_alignRight="@+id/spinnerTipoPago"
-        android:layout_alignEnd="@+id/spinnerTipoPago" />
+        android:layout_toRightOf="@+id/textView7"
+        android:layout_toEndOf="@+id/textView7"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp" />
 
     <Button
         android:id="@+id/btAgregarProducto"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:text="Agregar"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:layout_alignTop="@+id/textView7"
-        android:layout_toRightOf="@+id/prueba234"
-        android:layout_toEndOf="@+id/prueba234" />
+        android:background="@color/colorButton"
+        android:textColor="@android:color/white"
+        android:layout_alignBaseline="@+id/MontoTotalAPagar"
+        android:layout_alignBottom="@+id/MontoTotalAPagar"
+        android:layout_alignLeft="@+id/btRealizarVenta"
+        android:layout_alignStart="@+id/btRealizarVenta" />
 
     <ScrollView
-        android:layout_width="355dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_above="@+id/btRealizarVenta"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_weight="1"
         android:scrollbars="none"
-        android:layout_below="@+id/btAgregarProducto"
-        android:id="@+id/scrollView2">
+        android:layout_above="@+id/etMontodePagoTotalCliente"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TableLayout
             android:id="@+id/DetalleFacturaVenta"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView7"
-            android:layout_marginTop="24dp">
+            >
 
 
         </TableLayout>
@@ -177,8 +178,10 @@
     <Button
         android:id="@+id/btRealizarVenta"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:text="Vender"
+        android:background="@color/colorButton"
+        android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/prueba234"
         android:layout_toEndOf="@+id/prueba234" />
@@ -192,5 +195,17 @@
         android:layout_alignStart="@+id/scrollView2"
         android:ems="10"
         android:hint="Monto que paga"
+
         android:inputType="textPersonName|number|numberDecimal" />
+
+    <EditText
+        android:id="@+id/etNReferencia"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/etMontodePagoTotalCliente"
+        android:layout_alignRight="@+id/etMontodePagoTotalCliente"
+        android:layout_below="@+id/spinnerPlazoDías"
+        android:ems="10"
+        android:hint="NReferencia"
+        android:inputType="textPersonName" />
 </RelativeLayout>

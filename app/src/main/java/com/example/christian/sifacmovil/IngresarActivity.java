@@ -68,7 +68,7 @@ public class IngresarActivity extends AppCompatActivity {
                            try {
                                Intent ListSong = new Intent(getApplicationContext(), PrincipalActivity.class);
                                startActivity(ListSong);
-                               finish();
+
                            }catch (Exception e){
                                Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
                            }

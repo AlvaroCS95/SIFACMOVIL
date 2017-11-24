@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +39,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
     ArrayList<String> listatipoVenta;
     TableLayout DetalleFacturaVenta;
     TableRow row;
-    EditText etCantidad, etDescuento,etMontoPago,TotalPagaCliente;
+    EditText etCantidad, etDescuento,TotalPagaCliente;
     String TotalAPAgarPorElCliente="";
     Float precioProducto= Float.valueOf(0);
     Float totalQuePagaCliente= Float.valueOf(0);
@@ -63,15 +64,13 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         MontoTotalAPagar=(TextView)findViewById(R.id.MontoTotalAPagar);
         etCantidad=(EditText)findViewById(R.id.etCantidad);
         etDescuento=(EditText)findViewById(R.id.etDescuento);
-        etMontoPago=(EditText)findViewById(R.id.etMontodePagoTotal);
         TotalPagaCliente=(EditText)findViewById(R.id.etMontodePagoTotalCliente);
         DetalleFacturaVenta=(TableLayout)findViewById(R.id.DetalleFacturaVenta);
         DetalleFacturaVenta.setClickable(true);
-        DialogoConfirmacion mensaje;
-        final String CodigoProducto = "";
-
         Bundle bundle=getIntent().getExtras();
         text.setText(bundle.getString("NCliente")+" - Nombre Cliente: "+bundle.getString("Nombre"));
+
+
 
         consultarListaProductos();
         obtenerListaDias();
@@ -142,7 +141,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
                            view=new TextView(getBaseContext());
                            view.setGravity(Gravity.CENTER_VERTICAL);
-                           view.setPadding(15,15,15,15);
+                           view.setPadding(10,10,10,10);
                            view.setText(cadena[posicion]);
 
                            view.setBackgroundResource(R.color.colorTabla);
@@ -193,9 +192,9 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         Vender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(DetalleFacturaVenta.getChildCount()==0||TotalPagaCliente.getText().toString().equals("")){
+                if(DetalleFacturaVenta.getChildCount()==0||TotalPagaCliente.getText().toString().equals("")||TipoVenta.getItemAtPosition(listaDeProductos.getSelectedItemPosition()).toString().equals("Seleccione")){
                     AlertDialog.Builder errorNollenotodo= new AlertDialog.Builder(FacturaDeVentaActivity.this);
-                    errorNollenotodo.setMessage("Por favor ingrese productos y una suma con la cual el cliente va a cancelar.")
+                    errorNollenotodo.setMessage("Por favor ingrese productos y una suma con la cual el cliente va a cancelar o tipo de venta.")
                             .setCancelable(false)
                             .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
                                 @Override
@@ -224,8 +223,30 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                         alerterrorPAgoIncompletoo.show();
                         return;
                     }else{//inicia el recorrido para ingresar la factura
+                        AlertDialog.Builder confirmacionIngresarVenta= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                        confirmacionIngresarVenta.setMessage("Seguro que quiere ingresar esta venta"+IngresarActivity.IdUsuario)
+                                .setCancelable(false)
+                                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
 
+
+
+
+
+
+                                    }
+                                }).setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                return;
+                            }
+                        });
+                        AlertDialog alertconfirmacionIngresarVenta=confirmacionIngresarVenta.create();
+                        alertconfirmacionIngresarVenta.setTitle("IngresarVenta");
+                        alertconfirmacionIngresarVenta.show();
                     }
                 }
 
@@ -354,6 +375,28 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
         }
         return Existe;
+    }
+
+    public boolean IngresarVenta(TableRow row) {
+
+        //This method is to get the contents of the table once it is filled
+        boolean Exito=false;
+        String productoALaVenta = "";
+        for (int i = 0; i < DetalleFacturaVenta.getChildCount(); i++) {
+            row = (TableRow) DetalleFacturaVenta.getChildAt(i);
+            for (int j = 0; j < row.getChildCount(); j++) {
+                TextView currentCell = (TextView) row.getChildAt(j);
+                productoALaVenta += currentCell.getText().toString()+"-";
+
+            }
+            String[] productoParaVender=productoALaVenta.split("-");
+            productoALaVenta="";
+
+
+        }
+
+
+        return Exito;
     }
 
 }
