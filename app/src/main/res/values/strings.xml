@@ -10,6 +10,9 @@
     <string name="Iniciardia">Empezar Día</string>
     <string name="TextoListainventario">\tListado de los productos \ncon sus existencias/precios</string>
     <string name="ActualizarInventario">Actualizar Inventario</string>
+    <string name="TextoListaFacturaVEnta">\tListado de todas las \ncon facturas de venta</string>
+    <string name="TextoListaDetalleFacturaVEnta">\tListado de todos los  \nproductos de la venta</string>
+    <string name="ActualizarFacturaVEnta">Actualizar Factura Venta</string>
     <string name="ConsultarInventario">Consutar Inventario</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

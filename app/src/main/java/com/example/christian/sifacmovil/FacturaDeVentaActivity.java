@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +33,11 @@ import com.example.christian.sifacmovil.Modelos.Producto;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Set;
 import java.util.UUID;
 
@@ -154,7 +159,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                         alert2.setTitle("Error");
                         alert2.show();
                     }else{
-                        String precio=producto[2].toString();
+                        String precio=producto[3].toString();
                         precioProducto =Float.parseFloat(precio);
                         if(etDescuento.getText().toString().equals("")){
                             descuento= Float.valueOf(0);
@@ -163,14 +168,11 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                             descuento=descuentoPorcentaje/100;
                         }
                         cantidad = Float.parseFloat(etCantidad.getText().toString());
-                        PrecioFinalProducto=(precioProducto*cantidad)-(precioProducto*descuento);
+                        PrecioFinalProducto=(precioProducto*cantidad)-((precioProducto*cantidad)*descuento);
                         TotalPagar+=PrecioFinalProducto;
                         TotalAPAgarPorElCliente="¢"+TotalPagar;
                         MontoTotalAPagar.setText(TotalAPAgarPorElCliente);
-                        //AyudanteDetalleFacturaVenta ayudanteObjeto= new AyudanteDetalleFacturaVenta(producto[0],producto[1],cantidad,descuentoPorcentaje,PrecioFinalProducto);
-                        //AyudanteDetaleFactura.add(ayudanteObjeto);
-                       // dato+=producto[0]+"-"+producto[1]+cantidad+"-"+descuentoPorcentaje+"-"+PrecioFinalProducto+"-";
-                        //Contador++;
+
                         final String []cadena={producto[0],producto[1],cantidad+"",descuentoPorcentaje+"%",""+PrecioFinalProducto};
                         row=new TableRow(getBaseContext());
 
@@ -234,16 +236,79 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(DetalleFacturaVenta.getChildCount()==0||TotalPagaCliente.getText().toString().equals("")||TipoPago.getItemAtPosition(TipoPago.getSelectedItemPosition()).toString().equals("Seleccione")){
-
+                    AlertDialog.Builder errorNotienetodo= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                    errorNotienetodo.setMessage("Debe ingresar tipo venta o un producto para vender")
+                            .setCancelable(false)
+                            .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    return;
+                                }
+                            });
+                    AlertDialog alert10=errorNotienetodo.create();
+                    alert10.setTitle("Error");
+                    alert10.show();
                     return;
                 }else{//inicio if si los datos estan ingresados
                     totalQuePagaCliente=Float.parseFloat(TotalPagaCliente.getText().toString());
                     if(totalQuePagaCliente<TotalPagar){//inicio if si lo que el cliente dio es menor a lo que tiene que pagar
-
+                        AlertDialog.Builder errorMEnosdinero= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                        errorMEnosdinero.setMessage("Esta ingresando una cantidaad menor a la que el clinete debe")
+                                .setCancelable(false)
+                                .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        return;
+                                    }
+                                });
+                        AlertDialog alerterrorMEnosdinero=errorMEnosdinero.create();
+                        alerterrorMEnosdinero.setTitle("Error");
+                        alerterrorMEnosdinero.show();
                         return;
                     }else{//inicia el recorrido para ingresar la factura
+                        AlertDialog.Builder errorMEnosdinero= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                        errorMEnosdinero.setMessage("Esta Seguro que quiere ingresar esta venta")
+                                .setCancelable(false)
+                                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String Encabezado
+                                                = "\n\t        Distribuidora MyF\n"
+                                                + "\t  Aramed de Jesus Sequeira Vega\n"
+                                                + "\t\t      Cedula: 5-256-190\n"
+                                                + "\t   Tels: 83031359 / 88197499\n"
+                                                + "\t  Email: aramedsequeira@yahoo.es\n"
+                                                + "\t\t\t       Nicoya, Guanacaste\n"
+                                                + "--------------------------------\n";
+                                        String imprimir= IngresarVenta();
 
-                        printTable(view);
+                                        try{
+                                            findBT();
+                                            openBT();
+                                            sendData(Encabezado);
+                                            sendData(imprimir);
+                                        }catch (Exception e){
+
+                                        }
+                                        try {
+                                            Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
+                                            startActivity(ListSong);
+                                            finish();
+                                        }catch (Exception e){
+                                            Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
+                                        }
+
+                                    }
+                                })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        });
+                        AlertDialog alerterrorMEnosdinero=errorMEnosdinero.create();
+                        alerterrorMEnosdinero.setTitle("Error");
+                        alerterrorMEnosdinero.show();
 
                     }
                 }
@@ -284,19 +349,13 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         obtenerListaProductos();
     }
 
-    public void MandarImprimir(String Encabezado,String Texto){
-
-
-
-
-    }
 
     private void obtenerListaProductos() {
         listaProductos=new ArrayList<String>();
         listaProductos.add("Seleccione");
 
         for(int i=0;i<productosList.size();i++){
-            listaProductos.add(productosList.get(i).getCodigo()+" - "+productosList.get(i).getNombre()+" - "+productosList.get(i).getExistencias());
+            listaProductos.add(productosList.get(i).getCodigo()+" - "+productosList.get(i).getNombre()+" - "+productosList.get(i).getExistencias()+" - "+productosList.get(i).getPrecio());
         }
 
     }
@@ -351,29 +410,55 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         return Exito;
     }
 
-    public void MostrarArray(){
-        String datos="";
-        for (int i=0; i<AyudanteDetaleFactura.size();i++){
-            datos+=AyudanteDetaleFactura.get(i).getCodigo()+AyudanteDetaleFactura.get(i).getTotalPagar();
-        }
-        Toast.makeText(getApplicationContext(),datos, Toast.LENGTH_LONG).show();
-    }
-    public String printTable(View v) {
-        //String[] datosaImprimir = new String[DetalleFacturaVenta.getChildCount()];
-        //ArrayList
-        String Mostrar="";
+
+    public String IngresarVenta() {
+        SQLiteDatabase db=conn.getReadableDatabase();
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
+        //"Hora-Fecha:" + hourdateFormat.format(date)
+        String Mostrar=formattedDate+"\nCod   Cant     Tlt    Descr \n";
+        String codigo="";
+        String nombre="";
+        String prueba="";
+        String cantidad="";
+        String precio="";
+        String codigoSql="";
         String rowConten="";
         for (int i = 0; i < DetalleFacturaVenta.getChildCount(); i++) {
             TableRow row = (TableRow) DetalleFacturaVenta.getChildAt(i);
             for (int j = 0; j < row.getChildCount(); j++) {
                 TextView currentCell = (TextView) row.getChildAt(j);
-                rowConten += currentCell.getText() + "-";
+
+                if(j==0){
+                    codigoSql=currentCell.getText().toString();
+                    codigo=String.format("%1$-4s",codigoSql);
+                }else if(j==1){
+                   if(currentCell.getText().toString().length()>10){
+                        prueba=currentCell.getText().toString().replaceAll("\\s","");
+                        nombre=prueba.substring(0,10);
+                    }else {
+                            prueba=currentCell.getText().toString().replaceAll("\\s","");
+                            nombre=String.format("%1$-10s",prueba);
+                    }
+                }else if(j==2){
+                    cantidad=currentCell.getText().toString();
+                }else if(j==4){
+                    precio=currentCell.getText().toString();
+                }
             }
-            Mostrar+=rowConten+"\n";
-            rowConten="";
+            Mostrar+=codigo+"  "+precio+"   "+cantidad+"  "+nombre+"\n";
+            ContentValues cv = new ContentValues();
+            Float total=DevuelveExistenciaProductoEspecifico(codigoSql);
+            Float cantidadVendidad=Float.parseFloat(cantidad);
+            Float nuevoCantidad=total-cantidadVendidad;
+            cv.put(AyudanteCreacionBD.CAMPO_EXISTENCIA,nuevoCantidad);
+            db.update(AyudanteCreacionBD.TABLA_PRODUCTO, cv, AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+"="+codigoSql, null);
+            precio="";nombre="";cantidad="";codigo="";
+
         }
-        Toast.makeText(getApplicationContext(),Mostrar, Toast.LENGTH_LONG).show();
-        return rowConten;
+
+        return Mostrar;
     }
 
     public void Eliminaaproducto(String CodigoProdcutoEliminar,TableRow row) {
@@ -416,27 +501,6 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         return Existe;
     }
 
-    public boolean IngresarVenta(TableRow row) {
-
-        //This method is to get the contents of the table once it is filled
-        boolean Exito=false;
-        String productoALaVenta = "";
-        for (int i = 0; i < DetalleFacturaVenta.getChildCount(); i++) {
-            row = (TableRow) DetalleFacturaVenta.getChildAt(i);
-            for (int j = 0; j < row.getChildCount(); j++) {
-                TextView currentCell = (TextView) row.getChildAt(j);
-                productoALaVenta += currentCell.getText().toString()+"-";
-
-            }
-            String[] productoParaVender=productoALaVenta.split("-");
-            productoALaVenta="";
-
-
-        }
-
-
-        return Exito;
-    }
 
 
     void findBT() {

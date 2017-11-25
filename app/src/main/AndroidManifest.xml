@@ -23,7 +23,9 @@
         </activity>
         <activity android:name=".NuevoUsuarioActivity" />
         <activity android:name=".ListarImventarioActivity" />
-        <activity android:name=".FacturaDeVentaActivity"></activity>
+        <activity android:name=".FacturaDeVentaActivity" />
+        <activity android:name=".ListarFacturasVentaActivity" />
+        <activity android:name=".ListarDetalleFacturaVentaActivity"></activity>
     </application>
 
 </manifest>
