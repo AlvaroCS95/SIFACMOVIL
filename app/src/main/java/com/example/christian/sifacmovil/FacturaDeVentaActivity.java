@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -85,9 +86,8 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
     String rowContent = "";
     int Contador=0;
     String dato="";
-    String NReferencia="";
-    String DatosParaImprimir="";
-    String TipoVentaParaimprimir="";
+    String idCliente="";
+    String NombreLocalImprimir="";
 
 
     @Override
@@ -112,9 +112,8 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         Bundle bundle=getIntent().getExtras();
         dato="";
         text.setText(bundle.getString("NCliente")+" - Nombre Cliente: "+bundle.getString("Nombre"));
-
-
-
+        idCliente=bundle.getString("NCliente");
+        NombreLocalImprimir=bundle.getString("Nombre");
         consultarListaProductos();
         obtenerListaDias();
         obtenerListaTipoPago();
@@ -334,11 +333,16 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                                 Calendar c = Calendar.getInstance();
                                                                 SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                                                                 String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
-                                                                String imprimir= IngresarVenta();
-                                                                String abajoEncabezado="Tipo Venta: Contado\n" +
-                                                                        "Tipo Pago: " +tipoPago+"\n"+
-                                                                        ""+formattedDate+"\n--------------------------------";
+                                                                String fechabd=df.format(c.getTime());
 
+                                                                IngresarFacturaVenta(0,1,"",fechabd.replaceAll("/","-"));
+                                                                String NFact=DevuelveUtilmoRegistro()+"";
+                                                                String abajoEncabezado="Tipo Venta: Contado\n" +
+                                                                        "Tipo Pago: " +tipoPago+"\n" +
+                                                                        "Nombre del Cliente: \n"+NombreLocalImprimir+"\n"+
+                                                                        "Factura # "+NFact+"\n"+
+                                                                        ""+formattedDate+"\n--------------------------------";
+                                                                String imprimir= IngresarVenta(NFact);
                                                                 String Encabezado
                                                                         = "\n\t        Distribuidora MyF\n"
                                                                         + "\t  Aramed de Jesus Sequeira Vega\n"
@@ -404,14 +408,24 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     String tipoPago=TipoPago.getItemAtPosition(TipoPago.getSelectedItemPosition()).toString();
                                                     String referencia=etreferencia.getText().toString();
                                                     Calendar c = Calendar.getInstance();
+                                                    String[] pago=tipoPago.split("-");
+                                                    int pagoImp=Integer.parseInt(pago[0]);
+                                                    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+                                                    String fechabd=df.format(c.getTime());
+                                                    IngresarFacturaVenta(0,pagoImp,referencia,fechabd.replaceAll("/","-"));
+                                                    String NFac=DevuelveUtilmoRegistro()+"";
                                                     String Descuento="--------------------------------\nTotal a pagar: "+TotalPagar+"\n" +
                                                             "Numero referencia transaccion: \n"+referencia+"\n" +
                                                             "Gracias por preferirnos" ;
-                                                    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
                                                     String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
                                                     String abajoEncabezado="Tipo Venta: Contado\n" +
                                                             "Tipo Pago: " +tipoPago+"\n"+
+                                                            "Nombre del Cliente: \n"+NombreLocalImprimir+"\n"+
+                                                            "Factura # "+NFac+"\n"+
                                                             ""+formattedDate+"\n--------------------------------";
+                                                    String imprimir= IngresarVenta(NFac);
                                                     String Encabezado
                                                             = "\n\t        Distribuidora MyF\n"
                                                             + "\t  Aramed de Jesus Sequeira Vega\n"
@@ -420,7 +434,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                             + "\t  Email: aramedsequeira@yahoo.es\n"
                                                             + "\t\t\t       Nicoya, Guanacaste\n"
                                                             + "--------------------------------\n";
-                                                    String imprimir= IngresarVenta();
+
                                                     try{
                                                         findBT();
                                                         openBT();
@@ -487,7 +501,12 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                             "Gracias por preferirnos" ;
                                                     SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                                                     String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
+                                                    String fechabd=df.format(c.getTime());
+                                                    IngresarFacturaVenta(1,0,"",fechabd.replaceAll("/","-"));
+                                                    String NFact=DevuelveUtilmoRegistro()+"";
                                                     String abajoEncabezado="Tipo Venta: Credito\n" +
+                                                            "Nombre del Cliente: \n"+NombreLocalImprimir+"\n" +
+                                                            "Factura # "+NFact+"\n"+
                                                             ""+formattedDate+"\n--------------------------------";
                                                     String Encabezado
                                                             = "\n\t        Distribuidora MyF\n"
@@ -497,7 +516,9 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                             + "\t  Email: aramedsequeira@yahoo.es\n"
                                                             + "\t\t\t       Nicoya, Guanacaste\n"
                                                             + "--------------------------------\n";
-                                                    String imprimir= IngresarVenta();
+                                                    String imprimir= IngresarVenta(NFact);
+
+
                                                     try{
                                                         findBT();
                                                         openBT();
@@ -630,7 +651,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
 
 
-    public String IngresarVenta() {
+    public String IngresarVenta(String NFactura) {
         SQLiteDatabase db=conn.getReadableDatabase();
         String Mostrar="\nCod   Tlt       Cant   Descr \n";
         String codigo="";
@@ -638,7 +659,9 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         String prueba="";
         String cantidad="";
         String precio="";
+        String Desc="";
         String codigoSql="";
+        String codigoDetalle="";
         String rowConten="";
         for (int i = 0; i < DetalleFacturaVenta.getChildCount(); i++) {
             TableRow row = (TableRow) DetalleFacturaVenta.getChildAt(i);
@@ -647,6 +670,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
                 if(j==0){
                     codigoSql=currentCell.getText().toString();
+                    codigoDetalle=codigoSql;
                     codigo=String.format("%1$-4s",codigoSql);
                 }else if(j==1){
                    if(currentCell.getText().toString().length()>10){
@@ -658,27 +682,69 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                     }
                 }else if(j==2){
                     cantidad=currentCell.getText().toString();
+                }else if(j==3){
+                    Desc=currentCell.getText().toString().replaceAll("%","");
                 }else if(j==4){
                     precio=currentCell.getText().toString();
                 }
             }
             Mostrar+=codigo+"  "+precio+"   "+cantidad+"  "+nombre+"\n";
+            Float ca=Float.parseFloat(cantidad);
+            Float descu=Float.parseFloat(Desc);
+            Float preci=Float.parseFloat(precio);
+            preci=preci/ca;
+            IngresarDetalleFacturaVenta(NFactura,codigoDetalle,ca,descu,preci);
             ContentValues cv = new ContentValues();
             Float total=DevuelveExistenciaProductoEspecifico(codigoSql);
             Float cantidadVendidad=Float.parseFloat(cantidad);
             Float nuevoCantidad=total-cantidadVendidad;
             cv.put(AyudanteCreacionBD.CAMPO_EXISTENCIA,nuevoCantidad);
             db.update(AyudanteCreacionBD.TABLA_PRODUCTO, cv, AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+"="+codigoSql, null);
-            precio="";nombre="";cantidad="";codigo="";
+
+            precio="";nombre="";cantidad="";codigo="";Desc="";codigoDetalle="";
 
         }
 
         return Mostrar+"\n";
     }
 
-    public void IngresarFacturaVenta(){
-        SQLiteDatabase db=conn.getWritableDatabase();
+    public int DevuelveUtilmoRegistro(){
+        int NFactura=0;
+        SQLiteDatabase db=conn.getReadableDatabase();
+        String consulta="SELECT MAX("+AyudanteCreacionBD.CAMPO_NUMERO_FACTURA+") FROM "+AyudanteCreacionBD.TABLA_FACTURA_VENTA;
+        Cursor cursor=db.rawQuery(consulta,null);
+        while (cursor.moveToNext()){
+            NFactura=cursor.getInt(0);
+        }
 
+        return NFactura;
+    }
+
+    public void IngresarFacturaVenta(int TipoVenta,int TipoPago, String referencia, String fecha){
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        int idClien=Integer.parseInt(idCliente.replaceAll(" ",""));
+        values.put(AyudanteCreacionBD.CAMPO_TIPO_VENTA_VENTA,TipoVenta);
+        values.put(AyudanteCreacionBD.CAMPO_ID_USUARIO_VENTA,IngresarActivity.IdUsuario);
+        values.put(AyudanteCreacionBD.CAMPO_ID_CLIENTE_VENTA,idClien);
+        values.put(AyudanteCreacionBD.CAMPO_TIPO_PAGO_VENTA,TipoPago);
+        values.put(AyudanteCreacionBD.CAMPO_N_REFERENCIA,referencia);
+        values.put(AyudanteCreacionBD.CAMPO_MONTO_TOTAL,TotalPagar);
+        values.put(AyudanteCreacionBD.CAMPO_FECHA,fecha);
+        Long idResultante=db.insert(AyudanteCreacionBD.TABLA_FACTURA_VENTA,null,values);
+        Toast.makeText(getApplicationContext(),"Se ingreso la factura con exito", Toast.LENGTH_LONG).show();
+    }
+    public void IngresarDetalleFacturaVenta(String NFatura,String producto,Float Cantidad,Float descuento,Float precio){
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        int nFactura=Integer.parseInt(NFatura);
+        values.put(AyudanteCreacionBD.CAMPO_NUMERO_FACTURA_DETALLE,nFactura);
+        values.put(AyudanteCreacionBD.CAMPO_ID_PRODUCTO_DETALLE,producto);
+        values.put(AyudanteCreacionBD.CAMPO_CANTIDAD,Cantidad);
+        values.put(AyudanteCreacionBD.CAMPO_DESCUENTO,descuento);
+        values.put(AyudanteCreacionBD.CAMPO_PRECIO_VENTA,precio);
+        Long idResultante=db.insert(AyudanteCreacionBD.TABLA_DETALLE_FACTURA_VENTA,null,values);
+        //Toast.makeText(getApplicationContext(),"Se ingreso la factura con exito", Toast.LENGTH_LONG).show();
     }
 
     public void Eliminaaproducto(String CodigoProdcutoEliminar,TableRow row) {

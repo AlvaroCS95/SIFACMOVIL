@@ -54,6 +54,16 @@
         android:layout_alignRight="@+id/btEmpezarDia"
         android:layout_alignEnd="@+id/btEmpezarDia"
         android:id="@+id/btNuevoUsuario"/>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Facturas Venta"
+        android:layout_marginTop="19dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorButton"
+        android:layout_below="@+id/btNuevoUsuario"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btListarFacturas"/>
 
 
 </RelativeLayout>

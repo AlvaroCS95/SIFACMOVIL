@@ -35,7 +35,7 @@ import com.example.christian.sifacmovil.Modelos.Producto;
 
 public class PrincipalActivity extends AppCompatActivity {
 
-    Button btIngresarCliente, btempezardia, btnuevousuario, btconsultarinventario;
+    Button btIngresarCliente, btempezardia, btnuevousuario, btconsultarinventario,btListarFacturas;
 
     AyudanteConeccionMySql ayudanteConeccionMySql= new AyudanteConeccionMySql();
 
@@ -51,6 +51,7 @@ public class PrincipalActivity extends AppCompatActivity {
         btempezardia= (Button) findViewById(R.id.btEmpezarDia);
         btnuevousuario= (Button) findViewById(R.id.btNuevoUsuario);
         btconsultarinventario= (Button) findViewById(R.id.btInventario);
+        btListarFacturas=(Button) findViewById(R.id.btListarFacturas);
 
         btIngresarCliente.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +100,18 @@ public class PrincipalActivity extends AppCompatActivity {
             }
         });
 
+        btListarFacturas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    Intent ListSong = new Intent(getApplicationContext(), ListarFacturasVentaActivity.class);
+                    startActivity(ListSong);
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"No se puede ir a listar facturas", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
     }
 

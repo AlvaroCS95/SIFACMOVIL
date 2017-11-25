@@ -40,7 +40,7 @@ public class ListarClientesActivity extends AppCompatActivity {
             try {
                 Intent ListSong = new Intent(getApplicationContext(), FacturaDeVentaActivity.class);
                 ListSong.putExtra("NCliente", ncliente.getText().toString());
-                ListSong.putExtra("Nombre", ayudante[0]);
+                ListSong.putExtra("Nombre", ayudante[1].replaceAll("\\s",""));
                 startActivity(ListSong);
                 finish();
             }catch (Exception e){
