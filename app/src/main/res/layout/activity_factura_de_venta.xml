@@ -40,7 +40,7 @@
         android:text="TIpo Venta" />
 
     <Spinner
-        android:id="@+id/spinnerTipoPago"
+        android:id="@+id/spinnerITpoVenta"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textView3"
@@ -53,30 +53,29 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btAgregarProducto"
-        android:layout_alignStart="@+id/btAgregarProducto"
-        android:layout_alignTop="@+id/spinnerTipoPago"
-        android:text="Tipo Pago" />
+        android:text="Tipo Pago"
+        android:layout_alignTop="@+id/spinnerITpoVenta"
+        android:layout_alignRight="@+id/btAgregarProducto"
+        android:layout_alignEnd="@+id/btAgregarProducto" />
 
     <Spinner
-        android:id="@+id/spinnerITpoVenta"
+        android:id="@+id/spinnerTipoPago"
         android:layout_width="79dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinnerTipoPago"
-        android:layout_alignLeft="@+id/etCantidad"
-        android:layout_alignStart="@+id/etCantidad"
+        android:layout_below="@+id/spinnerITpoVenta"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/etNReferencia"
+        android:layout_toEndOf="@+id/etNReferencia" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:text="Plazo Días"
-        android:layout_below="@+id/spinnerTipoPago"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBottom="@+id/spinnerTipoPago"
+        android:layout_toLeftOf="@+id/spinnerITpoVenta"
+        android:layout_toStartOf="@+id/spinnerITpoVenta" />
 
     <Spinner
         android:id="@+id/spinnerPlazoDías"

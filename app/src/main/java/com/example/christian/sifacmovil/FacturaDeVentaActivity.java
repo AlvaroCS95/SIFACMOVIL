@@ -57,7 +57,8 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
     public  static int readBufferPosition;
     public static volatile boolean stopWorker;
     //
-    TextView text,view,MontoTotalAPagar;
+    TextView text,view,MontoTotalAPagar,CodigoNombrecliente;
+    //EditText etCantidad, etDescuent,TotalPagaCliente,Referencia;
     Button IngresarProducto,Vender;
     Spinner listaDeProductos,ListadeDias,TipoVenta,TipoPago;
     ArrayList<String> listaProductos;
@@ -70,18 +71,23 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
     TableRow row;
     Float cantidadparacomparar=Float.valueOf(0);
     Float cantidadparacompararUsuario=Float.valueOf(0);
-    EditText etCantidad, etDescuento,TotalPagaCliente;
+    EditText etCantidad, etDescuento,TotalPagaCliente,etreferencia;
     String TotalAPAgarPorElCliente="";
     Float precioProducto= Float.valueOf(0);
     Float totalQuePagaCliente= Float.valueOf(0);
     Float descuento= Float.valueOf(0);
+    Float Totaldescuentos= Float.valueOf(0);
     Float cantidad= Float.valueOf(0);
     Float descuentoPorcentaje= Float.valueOf(0);
     Float TotalPagar= Float.valueOf(0);
+    Float TotalPagarSinDescuento= Float.valueOf(0);
     Float PrecioFinalProducto= Float.valueOf(0);
     String rowContent = "";
     int Contador=0;
     String dato="";
+    String NReferencia="";
+    String DatosParaImprimir="";
+    String TipoVentaParaimprimir="";
 
 
     @Override
@@ -96,7 +102,9 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         IngresarProducto=(Button)findViewById(R.id.btAgregarProducto);
         Vender=(Button)findViewById(R.id.btRealizarVenta);
         MontoTotalAPagar=(TextView)findViewById(R.id.MontoTotalAPagar);
+        CodigoNombrecliente=(TextView)findViewById(R.id.CodigoNombrecliente);
         etCantidad=(EditText)findViewById(R.id.etCantidad);
+        etreferencia=(EditText)findViewById(R.id.etNReferencia);
         etDescuento=(EditText)findViewById(R.id.etDescuento);
         TotalPagaCliente=(EditText)findViewById(R.id.etMontodePagoTotalCliente);
         DetalleFacturaVenta=(TableLayout)findViewById(R.id.DetalleFacturaVenta);
@@ -169,6 +177,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                         }
                         cantidad = Float.parseFloat(etCantidad.getText().toString());
                         PrecioFinalProducto=(precioProducto*cantidad)-((precioProducto*cantidad)*descuento);
+                        Totaldescuentos+=(precioProducto*cantidad)*descuento;
                         TotalPagar+=PrecioFinalProducto;
                         TotalAPAgarPorElCliente="¢"+TotalPagar;
                         MontoTotalAPagar.setText(TotalAPAgarPorElCliente);
@@ -200,11 +209,19 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     Eliminaaproducto(producto[0],row);
-
-                                                    if(SeEliminoArray(producto[0])==true){
-                                                        Toast.makeText(getApplicationContext(),"Se elimino con exito: ", Toast.LENGTH_LONG).show();
-                                                    }
                                                     Float montoRebajar=Float.parseFloat(cadena[4].toString());
+                                                    if(cadena[3].equals("0.0%")){
+
+                                                    }else{
+                                                        Float preciorealproducto=DevuelvePRecioProductoEspecifico(producto[0]);
+                                                        String[] de=cadena[3].split("%");
+                                                        Float porc=Float.parseFloat(de[0]);
+                                                        Float cant=Float.parseFloat(cadena[2]);
+                                                        Float precioReal=preciorealproducto*cant;
+                                                        Float desc=porc/100;
+                                                        Totaldescuentos-=((precioReal*cant)*desc);
+                                                    }
+
                                                     TotalPagar=TotalPagar-montoRebajar;
                                                     TotalAPAgarPorElCliente="¢"+TotalPagar;
                                                     MontoTotalAPagar.setText(TotalAPAgarPorElCliente);
@@ -235,7 +252,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         Vender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(DetalleFacturaVenta.getChildCount()==0||TotalPagaCliente.getText().toString().equals("")||TipoPago.getItemAtPosition(TipoPago.getSelectedItemPosition()).toString().equals("Seleccione")){
+                if(DetalleFacturaVenta.getChildCount()==0||TipoVenta.getItemAtPosition(TipoVenta.getSelectedItemPosition()).toString().equals("Seleccione")){
                     AlertDialog.Builder errorNotienetodo= new AlertDialog.Builder(FacturaDeVentaActivity.this);
                     errorNotienetodo.setMessage("Debe ingresar tipo venta o un producto para vender")
                             .setCancelable(false)
@@ -249,68 +266,272 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                     alert10.setTitle("Error");
                     alert10.show();
                     return;
-                }else{//inicio if si los datos estan ingresados
-                    totalQuePagaCliente=Float.parseFloat(TotalPagaCliente.getText().toString());
-                    if(totalQuePagaCliente<TotalPagar){//inicio if si lo que el cliente dio es menor a lo que tiene que pagar
-                        AlertDialog.Builder errorMEnosdinero= new AlertDialog.Builder(FacturaDeVentaActivity.this);
-                        errorMEnosdinero.setMessage("Esta ingresando una cantidaad menor a la que el clinete debe")
-                                .setCancelable(false)
-                                .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        return;
-                                    }
-                                });
-                        AlertDialog alerterrorMEnosdinero=errorMEnosdinero.create();
-                        alerterrorMEnosdinero.setTitle("Error");
-                        alerterrorMEnosdinero.show();
-                        return;
-                    }else{//inicia el recorrido para ingresar la factura
-                        AlertDialog.Builder errorMEnosdinero= new AlertDialog.Builder(FacturaDeVentaActivity.this);
-                        errorMEnosdinero.setMessage("Esta Seguro que quiere ingresar esta venta")
-                                .setCancelable(false)
-                                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String Encabezado
-                                                = "\n\t        Distribuidora MyF\n"
-                                                + "\t  Aramed de Jesus Sequeira Vega\n"
-                                                + "\t\t      Cedula: 5-256-190\n"
-                                                + "\t   Tels: 83031359 / 88197499\n"
-                                                + "\t  Email: aramedsequeira@yahoo.es\n"
-                                                + "\t\t\t       Nicoya, Guanacaste\n"
-                                                + "--------------------------------\n";
-                                        String imprimir= IngresarVenta();
-
-                                        try{
-                                            findBT();
-                                            openBT();
-                                            sendData(Encabezado);
-                                            sendData(imprimir);
-                                        }catch (Exception e){
-
+                }else{
+                        //tipoventa 0-Contado
+                    if(TipoVenta.getItemAtPosition(TipoVenta.getSelectedItemPosition()).toString().equals("0-Contado")){
+                        if(TipoPago.getItemAtPosition(TipoPago.getSelectedItemPosition()).toString().equals("Seleccione")){
+                            AlertDialog.Builder errorNoTipoPago= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                            errorNoTipoPago.setMessage("Primero debe selecionar un tipo de pago")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            return;
                                         }
-                                        try {
-                                            Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
-                                            startActivity(ListSong);
-                                            finish();
-                                        }catch (Exception e){
-                                            Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
-                                        }
+                                    });
+                            AlertDialog alerterrorNoTipoPago=errorNoTipoPago.create();
+                            alerterrorNoTipoPago.setTitle("Error");
+                            alerterrorNoTipoPago.show();
+                            return;
+                        }else{
+                            if(TipoPago.getItemAtPosition(TipoPago.getSelectedItemPosition()).toString().equals("1-Efectivo")){
+                                        if(TotalPagaCliente.getText().toString().equals("")){//si no ingreso nada que el cliente paga
+                                            AlertDialog.Builder errorNoMontoCliente= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                                            errorNoMontoCliente.setMessage("ingrese un monto con el que el cliente va a pagar")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            return;
+                                                        }
+                                                    });
+                                            AlertDialog alerterrorerrorNoMontoClienteo=errorNoMontoCliente.create();
+                                            alerterrorerrorNoMontoClienteo.setTitle("Error");
+                                            alerterrorerrorNoMontoClienteo.show();
+                                            return;
+                                        }else{// si ingreso algo
+                                            totalQuePagaCliente=Float.parseFloat(TotalPagaCliente.getText().toString());
+                                            if(totalQuePagaCliente<TotalPagar){//inicio if si lo que el cliente dio es menor a lo que tiene que pagar
+                                                AlertDialog.Builder errorMEnosdinero= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                                                errorMEnosdinero.setMessage("Esta ingresando una cantidaad menor a la que el clinete debe")
+                                                        .setCancelable(false)
+                                                        .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                return;
+                                                            }
+                                                        });
+                                                AlertDialog alerterrorMEnosdinero=errorMEnosdinero.create();
+                                                alerterrorMEnosdinero.setTitle("Confirmación de venta");
+                                                alerterrorMEnosdinero.show();
+                                                return;
+                                            }else{//inicia el recorrido para ingresar la factura
+                                                AlertDialog.Builder confirmacio= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                                                confirmacio.setMessage("Esta Seguro que quiere ingresar esta venta")
+                                                        .setCancelable(false)
+                                                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                Float TotalSinDescuento=TotalPagar+Totaldescuentos;
+                                                                String tipoPago=TipoPago.getItemAtPosition(TipoPago.getSelectedItemPosition()).toString();
+                                                                Float vuelto=totalQuePagaCliente-TotalPagar;
+                                                                String Descuento="--------------------------------\nTotal a pagar: "+TotalPagar+"\n" +
+                                                                        "Descuento aplicado: " +Totaldescuentos+"\n" +
+                                                                        "Total sin descuento: "+TotalSinDescuento+"\n" +
+                                                                        "Cliente paga con: "+totalQuePagaCliente+"\n" +
+                                                                        "Su vuelto:"+vuelto+"\n" +
+                                                                        "Gracias por preferirnos";
+                                                                Calendar c = Calendar.getInstance();
+                                                                SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                                                String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
+                                                                String imprimir= IngresarVenta();
+                                                                String abajoEncabezado="Tipo Venta: Contado\n" +
+                                                                        "Tipo Pago: " +tipoPago+"\n"+
+                                                                        ""+formattedDate+"\n--------------------------------";
 
-                                    }
-                                })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                return;
+                                                                String Encabezado
+                                                                        = "\n\t        Distribuidora MyF\n"
+                                                                        + "\t  Aramed de Jesus Sequeira Vega\n"
+                                                                        + "\t\t      Cedula: 5-256-190\n"
+                                                                        + "\t   Tels: 83031359 / 88197499\n"
+                                                                        + "\t  Email: aramedsequeira@yahoo.es\n"
+                                                                        + "\t\t\t       Nicoya, Guanacaste\n"
+                                                                        + "--------------------------------\n";
+                                                                try{
+                                                                    findBT();
+                                                                    openBT();
+                                                                    sendData(Encabezado);
+                                                                    sendData(abajoEncabezado);
+                                                                    sendData(imprimir);
+                                                                    sendData(Descuento);
+                                                                }catch (Exception e){
+
+                                                                }
+                                                                try {
+                                                                    Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
+                                                                    startActivity(ListSong);
+                                                                    finish();
+                                                                }catch (Exception e){
+                                                                    Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
+                                                                }
+
+                                                            }
+                                                        })
+                                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                return;
+                                                            }
+                                                        });
+                                                AlertDialog alertconfirmacio=confirmacio.create();
+                                                alertconfirmacio.setTitle("Confirmación");
+                                                alertconfirmacio.show();
+
+                                            }
+                                        }
+                            }else{//inicio otro tipo pago
+                                if(etreferencia.getText().equals("")){
+                                    AlertDialog.Builder errorNoReferencia= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                                    errorNoReferencia.setMessage("Debe asignar un número de referencia")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    return;
+                                                }
+                                            });
+                                    AlertDialog alerterrorNoReferencia=errorNoReferencia.create();
+                                    alerterrorNoReferencia.setTitle("Error");
+                                    alerterrorNoReferencia.show();
+                                    return;
+                                }else{// si tiene todos los datos para ingresar una venta contado con referencia
+                                    AlertDialog.Builder confirmaciContadoTipoPAgoNReferencia= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                                    confirmaciContadoTipoPAgoNReferencia.setMessage("Esta Seguro que quiere ingresar esta venta")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    String tipoPago=TipoPago.getItemAtPosition(TipoPago.getSelectedItemPosition()).toString();
+                                                    String referencia=etreferencia.getText().toString();
+                                                    Calendar c = Calendar.getInstance();
+                                                    String Descuento="--------------------------------\nTotal a pagar: "+TotalPagar+"\n" +
+                                                            "Numero referencia transaccion: \n"+referencia+"\n" +
+                                                            "Gracias por preferirnos" ;
+                                                    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                                    String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
+                                                    String abajoEncabezado="Tipo Venta: Contado\n" +
+                                                            "Tipo Pago: " +tipoPago+"\n"+
+                                                            ""+formattedDate+"\n--------------------------------";
+                                                    String Encabezado
+                                                            = "\n\t        Distribuidora MyF\n"
+                                                            + "\t  Aramed de Jesus Sequeira Vega\n"
+                                                            + "\t\t      Cedula: 5-256-190\n"
+                                                            + "\t   Tels: 83031359 / 88197499\n"
+                                                            + "\t  Email: aramedsequeira@yahoo.es\n"
+                                                            + "\t\t\t       Nicoya, Guanacaste\n"
+                                                            + "--------------------------------\n";
+                                                    String imprimir= IngresarVenta();
+                                                    try{
+                                                        findBT();
+                                                        openBT();
+                                                        sendData(Encabezado);
+                                                        sendData(abajoEncabezado);
+                                                        sendData(imprimir);
+                                                        sendData(Descuento);
+
+                                                    }catch (Exception e){
+
+                                                    }
+                                                    try {
+                                                        Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
+                                                        startActivity(ListSong);
+                                                        finish();
+                                                    }catch (Exception e){
+                                                        Toast.makeText(getApplicationContext(),"No se puede ir a la lista de clientes", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                                }
+                                            })
+                                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    return;
+                                                }
+                                            });
+                                    AlertDialog alconfirmaciContadoTipoPAgoNReferencia=confirmaciContadoTipoPAgoNReferencia.create();
+                                    alconfirmaciContadoTipoPAgoNReferencia.setTitle("Confirmación");
+                                    alconfirmaciContadoTipoPAgoNReferencia.show();
+                                }//fin datos otro tipo de pago contado
+
                             }
-                        });
-                        AlertDialog alerterrorMEnosdinero=errorMEnosdinero.create();
-                        alerterrorMEnosdinero.setTitle("Error");
-                        alerterrorMEnosdinero.show();
 
+                        }
+
+                    } else if(TipoVenta.getItemAtPosition(TipoVenta.getSelectedItemPosition()).toString().equals("1-Credito")){
+                                if(ListadeDias.getItemAtPosition(ListadeDias.getSelectedItemPosition()).toString().equals("Seleccione")){
+                                    AlertDialog.Builder errorNoNumeroDias= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                                    errorNoNumeroDias.setMessage("Primero debe asignar un plazo de días")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    return;
+                                                }
+                                            });
+                                    AlertDialog alerterrorerrorNoNumeroDias=errorNoNumeroDias.create();
+                                    alerterrorerrorNoNumeroDias.setTitle("Error");
+                                    alerterrorerrorNoNumeroDias.show();
+                                    return;
+                                } else {// si tiene días asignados
+                                    AlertDialog.Builder confirmacioncredito= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+                                    confirmacioncredito.setMessage("Esta Seguro que quiere ingresar esta venta")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    String dias=ListadeDias.getItemAtPosition(ListadeDias.getSelectedItemPosition()).toString();
+                                                    Calendar c = Calendar.getInstance();
+                                                    String Descuento="--------------------------------\nTotal a pagar: "+TotalPagar+"\n" +
+                                                            "Plazo dias para cancelar: \n"+dias+"\n" +
+                                                            "Gracias por preferirnos" ;
+                                                    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                                    String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
+                                                    String abajoEncabezado="Tipo Venta: Credito\n" +
+                                                            ""+formattedDate+"\n--------------------------------";
+                                                    String Encabezado
+                                                            = "\n\t        Distribuidora MyF\n"
+                                                            + "\t  Aramed de Jesus Sequeira Vega\n"
+                                                            + "\t\t      Cedula: 5-256-190\n"
+                                                            + "\t   Tels: 83031359 / 88197499\n"
+                                                            + "\t  Email: aramedsequeira@yahoo.es\n"
+                                                            + "\t\t\t       Nicoya, Guanacaste\n"
+                                                            + "--------------------------------\n";
+                                                    String imprimir= IngresarVenta();
+                                                    try{
+                                                        findBT();
+                                                        openBT();
+                                                        sendData(Encabezado);
+                                                        sendData(abajoEncabezado);
+                                                        sendData(imprimir);
+                                                        sendData(Descuento);
+
+                                                    }catch (Exception e){
+
+                                                    }
+                                                    try {
+                                                        Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
+                                                        startActivity(ListSong);
+                                                        finish();
+                                                    }catch (Exception e){
+                                                        Toast.makeText(getApplicationContext(),"No se puede ir a la lista de clientes", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                                }
+                                            })
+                                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    return;
+                                                }
+                                            });
+                                    AlertDialog alconfirmacioncredito=confirmacioncredito.create();
+                                    alconfirmacioncredito.setTitle("Confirmació");
+                                    alconfirmacioncredito.show();
+
+                                }
                     }
+
                 }
 
 
@@ -370,54 +591,48 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         }
         return Existencias;
     }
+    public float DevuelvePRecioProductoEspecifico(String CodigoProductoABuscar){
+        Float Precio=Float.valueOf(0);
+        for(int ContadorRecorreListaproductos=0;ContadorRecorreListaproductos<listaProductos.size();ContadorRecorreListaproductos++){
+            String[] productoEspecifico=listaProductos.get(ContadorRecorreListaproductos).split("-");
+            if(CodigoProductoABuscar.equals(productoEspecifico[0])){
+                Precio=Float.parseFloat(productoEspecifico[3]);
+                break;
+            }
+        }
+        return Precio;
+    }
 
     private void obtenerListaDias() {
         listadias=new ArrayList<String>();
         listadias.add("Seleccione");
-        listadias.add("5-días");
-        listadias.add("10-días");
-        listadias.add("15-días");
+        listadias.add("5-dias");
+        listadias.add("10-dias");
+        listadias.add("15-dias");
     }
 
     private void obtenerListaTipoPago() {
         listatipopago=new ArrayList<String>();
         listatipopago.add("Seleccione");
-        listatipopago.add("0-Contado");
-        listatipopago.add("1-Credito");
+        listatipopago.add("1-Efectivo");
+        listatipopago.add("2-Cheque");
+        listatipopago.add("3-Transaccion");
+        listatipopago.add("4-TarjetaCredito");
 
     }
 
     private void obtenerListaTipoVenta() {
         listatipoVenta=new ArrayList<String>();
         listatipoVenta.add("Seleccione");
-        listatipoVenta.add("1-Efectivo");
-        listatipoVenta.add("2-Cheque");
-        listatipoVenta.add("3-Transaccion");
-        listatipoVenta.add("4-TarjetaCredito");
+        listatipoVenta.add("0-Contado");
+        listatipoVenta.add("1-Credito");
     }
 
-    public boolean SeEliminoArray(String Codigo){
-        Boolean Exito=false;
-
-        for (int i=0; i<AyudanteDetaleFactura.size();i++){
-            if(AyudanteDetaleFactura.get(i).getCodigo().equals(Codigo)){
-                Toast.makeText(getApplicationContext(),AyudanteDetaleFactura.get(i).getCodigo(), Toast.LENGTH_LONG).show();
-                AyudanteDetaleFactura.remove(i);
-                Exito=true;
-            }
-        }
-
-        return Exito;
-    }
 
 
     public String IngresarVenta() {
         SQLiteDatabase db=conn.getReadableDatabase();
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
-        //"Hora-Fecha:" + hourdateFormat.format(date)
-        String Mostrar=formattedDate+"\nCod   Cant     Tlt    Descr \n";
+        String Mostrar="\nCod   Tlt       Cant   Descr \n";
         String codigo="";
         String nombre="";
         String prueba="";
@@ -458,7 +673,12 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
         }
 
-        return Mostrar;
+        return Mostrar+"\n";
+    }
+
+    public void IngresarFacturaVenta(){
+        SQLiteDatabase db=conn.getWritableDatabase();
+
     }
 
     public void Eliminaaproducto(String CodigoProdcutoEliminar,TableRow row) {
