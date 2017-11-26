@@ -48,14 +48,26 @@ public class ListarDetalleFacturaVentaActivity extends AppCompatActivity {
 
         while (cursor.moveToNext()){
 
-            codigoProducto="Codigo: "+cursor.getString(2)+"\n";
+            codigoProducto="Codigo: "+cursor.getString(2)+"\n" +
+                    "Producto: "+DevuelveNombre(cursor.getString(2))+"\n";
             cantidad=cursor.getFloat(3);
             Preio=cursor.getFloat(5);
             montoTotal=cantidad*Preio;
             DetalleVenta=codigoProducto+"Cantidad: "+cantidad+"\nPrecio Vendido: "+Preio+"\nMonto Total: "+montoTotal;
             listaDetalleFacturas.add(DetalleVenta);
-
         }
 
+    }
+
+    String DevuelveNombre(String codigo){
+        String Nombre="";
+        SQLiteDatabase db=conn.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT "+AyudanteCreacionBD.CAMPO_NOMBRE_PRODUCTO+" FROM "+ AyudanteCreacionBD.TABLA_PRODUCTO+" WHERE "+
+                AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+" = "+codigo+"", null);
+        while (cursor.moveToNext()){
+            Nombre=cursor.getString(0);
+
+        }
+     return Nombre;
     }
 }

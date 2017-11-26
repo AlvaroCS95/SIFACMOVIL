@@ -66,7 +66,7 @@ public class ListarImventarioActivity extends AppCompatActivity {
             DatosAdicionales+="Existencias: "+cursor.getFloat(2)+"\n";
             DatosAdicionales+="¢ "+cursor.getFloat(3)+"\n";
             Excento=cursor.getString(4);
-            if(Excento.equals("null")){
+            if(Excento.equalsIgnoreCase("Null")){
                 DatosAdicionales+="No Excento";
             }else{
                 DatosAdicionales+="Exento";

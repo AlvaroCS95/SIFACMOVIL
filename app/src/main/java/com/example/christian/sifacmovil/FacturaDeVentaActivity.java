@@ -176,10 +176,18 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                         }
                         cantidad = Float.parseFloat(etCantidad.getText().toString());
                         PrecioFinalProducto=(precioProducto*cantidad)-((precioProducto*cantidad)*descuento);
+                        if(DevuelveExento(producto[0].toString())==false){
+                            Float impuestoventa=Float.valueOf(13)/100;
+                           Float precioConiv=PrecioFinalProducto*impuestoventa;
+                            PrecioFinalProducto+=precioConiv;
+                        }else{
+
+                        }
                         Totaldescuentos+=(precioProducto*cantidad)*descuento;
                         TotalPagar+=PrecioFinalProducto;
                         TotalAPAgarPorElCliente="¢"+TotalPagar;
                         MontoTotalAPagar.setText(TotalAPAgarPorElCliente);
+
 
                         final String []cadena={producto[0],producto[1],cantidad+"",descuentoPorcentaje+"%",""+PrecioFinalProducto};
                         row=new TableRow(getBaseContext());
@@ -340,7 +348,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                                 String abajoEncabezado="Tipo Venta: Contado\n" +
                                                                         "Tipo Pago: " +tipoPago+"\n" +
                                                                         "Nombre del Cliente: \n"+NombreLocalImprimir+"\n"+
-                                                                        "Factura # "+NFact+"\n"+
+                                                                        "Factura # "+NFact+"-"+IngresarActivity.Usuario+"\n"+
                                                                         ""+formattedDate+"\n--------------------------------";
                                                                 String imprimir= IngresarVenta(NFact);
                                                                 String Encabezado
@@ -354,10 +362,12 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                                 try{
                                                                     findBT();
                                                                     openBT();
-                                                                    sendData(Encabezado);
-                                                                    sendData(abajoEncabezado);
-                                                                    sendData(imprimir);
-                                                                    sendData(Descuento);
+                                                                    for(int i=0;i<2;i++){
+                                                                        sendData(Encabezado);
+                                                                        sendData(abajoEncabezado);
+                                                                        sendData(imprimir);
+                                                                        sendData(Descuento);
+                                                                    }
                                                                 }catch (Exception e){
 
                                                                 }
@@ -423,7 +433,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     String abajoEncabezado="Tipo Venta: Contado\n" +
                                                             "Tipo Pago: " +tipoPago+"\n"+
                                                             "Nombre del Cliente: \n"+NombreLocalImprimir+"\n"+
-                                                            "Factura # "+NFac+"\n"+
+                                                            "Factura # "+NFac+"-"+IngresarActivity.Usuario+"\n"+
                                                             ""+formattedDate+"\n--------------------------------";
                                                     String imprimir= IngresarVenta(NFac);
                                                     String Encabezado
@@ -438,10 +448,12 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     try{
                                                         findBT();
                                                         openBT();
-                                                        sendData(Encabezado);
-                                                        sendData(abajoEncabezado);
-                                                        sendData(imprimir);
-                                                        sendData(Descuento);
+                                                        for(int i=0;i<2;i++){
+                                                            sendData(Encabezado);
+                                                            sendData(abajoEncabezado);
+                                                            sendData(imprimir);
+                                                            sendData(Descuento);
+                                                        }
 
                                                     }catch (Exception e){
 
@@ -506,7 +518,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     String NFact=DevuelveUtilmoRegistro()+"";
                                                     String abajoEncabezado="Tipo Venta: Credito\n" +
                                                             "Nombre del Cliente: \n"+NombreLocalImprimir+"\n" +
-                                                            "Factura # "+NFact+"\n"+
+                                                            "Factura # "+NFact+"-"+IngresarActivity.Usuario+"\n"+
                                                             ""+formattedDate+"\n--------------------------------";
                                                     String Encabezado
                                                             = "\n\t        Distribuidora MyF\n"
@@ -522,11 +534,12 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     try{
                                                         findBT();
                                                         openBT();
-                                                        sendData(Encabezado);
-                                                        sendData(abajoEncabezado);
-                                                        sendData(imprimir);
-                                                        sendData(Descuento);
-
+                                                        for(int i=0;i<2;i++){
+                                                            sendData(Encabezado);
+                                                            sendData(abajoEncabezado);
+                                                            sendData(imprimir);
+                                                            sendData(Descuento);
+                                                        }
                                                     }catch (Exception e){
 
                                                     }
@@ -591,6 +604,21 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         obtenerListaProductos();
     }
 
+    Boolean DevuelveExento(String codigo){
+        boolean Execto=false;
+        SQLiteDatabase db=conn.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT "+AyudanteCreacionBD.CAMPO_EXCENTO+" FROM "+ AyudanteCreacionBD.TABLA_PRODUCTO+" WHERE "+
+                AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+" = "+codigo+"", null);
+        while (cursor.moveToNext()){
+            if(cursor.getString(0).equalsIgnoreCase("Null")){
+                Execto=false;
+            }else{
+                Execto=true;
+            }
+
+        }
+        return Execto;
+    }
 
     private void obtenerListaProductos() {
         listaProductos=new ArrayList<String>();
