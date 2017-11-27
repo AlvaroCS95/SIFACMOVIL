@@ -63,7 +63,7 @@ public class ListarDetalleFacturaVentaActivity extends AppCompatActivity {
         String Nombre="";
         SQLiteDatabase db=conn.getReadableDatabase();
         Cursor cursor=db.rawQuery("SELECT "+AyudanteCreacionBD.CAMPO_NOMBRE_PRODUCTO+" FROM "+ AyudanteCreacionBD.TABLA_PRODUCTO+" WHERE "+
-                AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+" = "+codigo+"", null);
+                AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+" = '"+codigo+"'", null);
         while (cursor.moveToNext()){
             Nombre=cursor.getString(0);
 

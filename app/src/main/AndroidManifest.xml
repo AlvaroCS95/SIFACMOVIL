@@ -25,7 +25,9 @@
         <activity android:name=".ListarImventarioActivity" />
         <activity android:name=".FacturaDeVentaActivity" />
         <activity android:name=".ListarFacturasVentaActivity" />
-        <activity android:name=".ListarDetalleFacturaVentaActivity"></activity>
+        <activity android:name=".ListarDetalleFacturaVentaActivity" />
+        <activity android:name=".IngresarDiaActivity" />
+        <activity android:name=".FinalizarDiaActivity"></activity>
     </application>
 
 </manifest>

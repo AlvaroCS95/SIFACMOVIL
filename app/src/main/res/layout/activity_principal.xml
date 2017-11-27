@@ -65,5 +65,15 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/btListarFacturas"/>
 
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Finalizar dia"
+        android:layout_marginTop="19dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorButton"
+        android:layout_below="@+id/btListarFacturas"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/finalizardiaprincipal"/>
 
 </RelativeLayout>

@@ -72,12 +72,14 @@ public class AyudanteCreacionBD {
     public static final String CAMPO_N_REFERENCIA="n_referencia";
     public static final String CAMPO_MONTO_TOTAL="monto_total";
     public static final String CAMPO_FECHA="fecha";
+    public static final String CAMPO_CANTIDAD_DIAS="cantidad_dias";
 
 
     public static final String CREAR_TABLA_FACTURA_VENTA="CREATE TABLE " +
             ""+TABLA_FACTURA_VENTA+" ("+CAMPO_NUMERO_FACTURA+" INTEGER PRIMARY KEY AUTOINCREMENT, "
             +CAMPO_TIPO_VENTA_VENTA+" INTEGER, "+CAMPO_ID_USUARIO_VENTA+" INTEGER, "+CAMPO_ID_CLIENTE_VENTA+" INTEGER, " +
-            CAMPO_TIPO_PAGO_VENTA+" INTEGER, "+CAMPO_N_REFERENCIA+" TEXT, "+CAMPO_MONTO_TOTAL+" FLOAT, "+CAMPO_FECHA+" DATETIME)";
+            CAMPO_TIPO_PAGO_VENTA+" INTEGER, "+CAMPO_N_REFERENCIA+" TEXT, "+CAMPO_MONTO_TOTAL+" FLOAT, "+CAMPO_FECHA+" DATETIME, " +
+            CAMPO_CANTIDAD_DIAS+" INTEGER)";
 
     //Constantes campos tabla DetalleFacturaVenta
     public static final String TABLA_DETALLE_FACTURA_VENTA="detalle_factura_venta";

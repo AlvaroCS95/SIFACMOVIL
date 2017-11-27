@@ -151,10 +151,17 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                 }else{
                     final String[] producto=listaDeProductos.getItemAtPosition(listaDeProductos.getSelectedItemPosition()).toString().split("-");
                     cantidadparacomparar=Float.parseFloat(producto[2]);
+                    Float descParaverificar=Float.valueOf(0);
+                    if(etDescuento.getText().toString().equals("")){
+                        descParaverificar= Float.valueOf(0);
+                    }else{
+                        descParaverificar=Float.parseFloat(etDescuento.getText().toString());
+
+                    }
                     cantidadparacompararUsuario=Float.parseFloat(etCantidad.getText().toString());
-                    if(ExiteProducto(producto[0].toString(),row)==true||cantidadparacomparar<cantidadparacompararUsuario){
+                    if(ExiteProducto(producto[0].replace(" ","").toString(),row)==true||cantidadparacomparar<cantidadparacompararUsuario||descParaverificar>100){
                         AlertDialog.Builder errorExiteProducto= new AlertDialog.Builder(FacturaDeVentaActivity.this);
-                        errorExiteProducto.setMessage("No puede ingresar un producto que ya este, o vender mas de lo que esta en inventario")
+                        errorExiteProducto.setMessage("No puede ingresar un producto que ya este, o vender mas de lo que esta en inventario, o ingresar un descuento mayor a 100")
                                 .setCancelable(false)
                                 .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
                                     @Override
@@ -189,7 +196,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                         MontoTotalAPagar.setText(TotalAPAgarPorElCliente);
 
 
-                        final String []cadena={producto[0],producto[1],cantidad+"",descuentoPorcentaje+"%",""+PrecioFinalProducto};
+                        final String []cadena={producto[0].replace(" ",""),producto[1],cantidad+"",descuentoPorcentaje+"%",""+PrecioFinalProducto};
                         row=new TableRow(getBaseContext());
 
                         for(int posicion=0;posicion<5;posicion++){
@@ -215,12 +222,12 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                             .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    Eliminaaproducto(producto[0],row);
+                                                    Eliminaaproducto(cadena[0],row);
                                                     Float montoRebajar=Float.parseFloat(cadena[4].toString());
                                                     if(cadena[3].equals("0.0%")){
 
                                                     }else{
-                                                        Float preciorealproducto=DevuelvePRecioProductoEspecifico(producto[0]);
+                                                        Float preciorealproducto=DevuelvePRecioProductoEspecifico(producto[0].replace(" ",""));
                                                         String[] de=cadena[3].split("%");
                                                         Float porc=Float.parseFloat(de[0]);
                                                         Float cant=Float.parseFloat(cadena[2]);
@@ -337,13 +344,13 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                                         "Total sin descuento: "+TotalSinDescuento+"\n" +
                                                                         "Cliente paga con: "+totalQuePagaCliente+"\n" +
                                                                         "Su vuelto:"+vuelto+"\n" +
-                                                                        "Gracias por preferirnos";
+                                                                        "Gracias por preferirnos\n\n\n\n";
                                                                 Calendar c = Calendar.getInstance();
                                                                 SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                                                                 String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
                                                                 String fechabd=df.format(c.getTime());
 
-                                                                IngresarFacturaVenta(0,1,"",fechabd.replaceAll("/","-"));
+                                                                IngresarFacturaVenta(0,1,"",fechabd.replaceAll("/","-"),0);
                                                                 String NFact=DevuelveUtilmoRegistro()+"";
                                                                 String abajoEncabezado="Tipo Venta: Contado\n" +
                                                                         "Tipo Pago: " +tipoPago+"\n" +
@@ -359,25 +366,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                                         + "\t  Email: aramedsequeira@yahoo.es\n"
                                                                         + "\t\t\t       Nicoya, Guanacaste\n"
                                                                         + "--------------------------------\n";
-                                                                try{
-                                                                    findBT();
-                                                                    openBT();
-                                                                    for(int i=0;i<2;i++){
-                                                                        sendData(Encabezado);
-                                                                        sendData(abajoEncabezado);
-                                                                        sendData(imprimir);
-                                                                        sendData(Descuento);
-                                                                    }
-                                                                }catch (Exception e){
-
-                                                                }
-                                                                try {
-                                                                    Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
-                                                                    startActivity(ListSong);
-                                                                    finish();
-                                                                }catch (Exception e){
-                                                                    Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
-                                                                }
+                                                                MandarImprimir(Encabezado,abajoEncabezado,imprimir,Descuento);
 
                                                             }
                                                         })
@@ -423,11 +412,11 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
                                                     String fechabd=df.format(c.getTime());
-                                                    IngresarFacturaVenta(0,pagoImp,referencia,fechabd.replaceAll("/","-"));
+                                                    IngresarFacturaVenta(0,pagoImp,referencia,fechabd.replaceAll("/","-"),0);
                                                     String NFac=DevuelveUtilmoRegistro()+"";
                                                     String Descuento="--------------------------------\nTotal a pagar: "+TotalPagar+"\n" +
                                                             "Numero referencia transaccion: \n"+referencia+"\n" +
-                                                            "Gracias por preferirnos" ;
+                                                            "Gracias por preferirnos\n\n\n\n" ;
 
                                                     String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
                                                     String abajoEncabezado="Tipo Venta: Contado\n" +
@@ -444,27 +433,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                             + "\t  Email: aramedsequeira@yahoo.es\n"
                                                             + "\t\t\t       Nicoya, Guanacaste\n"
                                                             + "--------------------------------\n";
-
-                                                    try{
-                                                        findBT();
-                                                        openBT();
-                                                        for(int i=0;i<2;i++){
-                                                            sendData(Encabezado);
-                                                            sendData(abajoEncabezado);
-                                                            sendData(imprimir);
-                                                            sendData(Descuento);
-                                                        }
-
-                                                    }catch (Exception e){
-
-                                                    }
-                                                    try {
-                                                        Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
-                                                        startActivity(ListSong);
-                                                        finish();
-                                                    }catch (Exception e){
-                                                        Toast.makeText(getApplicationContext(),"No se puede ir a la lista de clientes", Toast.LENGTH_LONG).show();
-                                                    }
+                                                    MandarImprimir(Encabezado,abajoEncabezado,imprimir,Descuento);
 
                                                 }
                                             })
@@ -507,14 +476,23 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                 public void onClick(DialogInterface dialog, int which) {
 
                                                     String dias=ListadeDias.getItemAtPosition(ListadeDias.getSelectedItemPosition()).toString();
+                                                    String[] numerodias=dias.split("-");
+                                                    int plazodias=Integer.parseInt(numerodias[0]);
                                                     Calendar c = Calendar.getInstance();
-                                                    String Descuento="--------------------------------\nTotal a pagar: "+TotalPagar+"\n" +
-                                                            "Plazo dias para cancelar: \n"+dias+"\n" +
-                                                            "Gracias por preferirnos" ;
+                                                    Calendar calendar = Calendar.getInstance();
                                                     SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                                                     String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
                                                     String fechabd=df.format(c.getTime());
-                                                    IngresarFacturaVenta(1,0,"",fechabd.replaceAll("/","-"));
+
+                                                    calendar.setTime(c.getTime()); // Configuramos la fecha que se recibe
+                                                    calendar.add(Calendar.DAY_OF_YEAR, plazodias);  // numero de días a añadir, o restar en caso de días<0
+                                                    calendar.getTime();
+                                                    String Descuento="--------------------------------\nTotal a pagar: "+TotalPagar+"\n" +
+                                                            "Plazo dias para cancelar: \n"+dias+"\n" +
+                                                            "Dia de pago maximo\n" +df.format(calendar.getTime())+"\n"+
+                                                            "Gracias por preferirnos\n\n\n\n" ;
+
+                                                    IngresarFacturaVenta(1,5,"",fechabd.replaceAll("/","-"),plazodias);
                                                     String NFact=DevuelveUtilmoRegistro()+"";
                                                     String abajoEncabezado="Tipo Venta: Credito\n" +
                                                             "Nombre del Cliente: \n"+NombreLocalImprimir+"\n" +
@@ -530,26 +508,8 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                             + "--------------------------------\n";
                                                     String imprimir= IngresarVenta(NFact);
 
+                                                    MandarImprimir(Encabezado,abajoEncabezado,imprimir,Descuento);
 
-                                                    try{
-                                                        findBT();
-                                                        openBT();
-                                                        for(int i=0;i<2;i++){
-                                                            sendData(Encabezado);
-                                                            sendData(abajoEncabezado);
-                                                            sendData(imprimir);
-                                                            sendData(Descuento);
-                                                        }
-                                                    }catch (Exception e){
-
-                                                    }
-                                                    try {
-                                                        Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
-                                                        startActivity(ListSong);
-                                                        finish();
-                                                    }catch (Exception e){
-                                                        Toast.makeText(getApplicationContext(),"No se puede ir a la lista de clientes", Toast.LENGTH_LONG).show();
-                                                    }
 
                                                 }
                                             })
@@ -608,7 +568,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         boolean Execto=false;
         SQLiteDatabase db=conn.getReadableDatabase();
         Cursor cursor=db.rawQuery("SELECT "+AyudanteCreacionBD.CAMPO_EXCENTO+" FROM "+ AyudanteCreacionBD.TABLA_PRODUCTO+" WHERE "+
-                AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+" = "+codigo+"", null);
+                AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+" = '"+codigo+"'", null);
         while (cursor.moveToNext()){
             if(cursor.getString(0).equalsIgnoreCase("Null")){
                 Execto=false;
@@ -618,6 +578,46 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
         }
         return Execto;
+    }
+
+
+    public void MandarImprimir(final String Encabezado, final  String abajoEncabezado, final String imprimir, final String Descuento){
+        try{
+            findBT();
+            openBT();
+                sendData(Encabezado);
+                sendData(abajoEncabezado);
+                sendData(imprimir);
+                sendData(Descuento);
+            AlertDialog.Builder confirmaimprimir= new AlertDialog.Builder(FacturaDeVentaActivity.this);
+            confirmaimprimir.setMessage("Recoja la copia cliente.")
+                    .setCancelable(false)
+                    .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                findBT();
+                                openBT();
+                                sendData(Encabezado);
+                                sendData(abajoEncabezado);
+                                sendData(imprimir);
+                                sendData(Descuento);
+                                Intent ListSong = new Intent(getApplicationContext(), ListarClientesActivity.class);
+                                startActivity(ListSong);
+                                finish();
+                            }catch (Exception e){
+                                Toast.makeText(getApplicationContext(),"No se puede ir a la pantalla principal", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+            AlertDialog alconfirmaimprimir=confirmaimprimir.create();
+            confirmaimprimir.setTitle("Volver a imprimri");
+            confirmaimprimir.show();
+        }catch (Exception e){
+
+        }
+
+
     }
 
     private void obtenerListaProductos() {
@@ -633,7 +633,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         Float Existencias=Float.valueOf(0);
         for(int ContadorRecorreListaproductos=0;ContadorRecorreListaproductos<listaProductos.size();ContadorRecorreListaproductos++){
             String[] productoEspecifico=listaProductos.get(ContadorRecorreListaproductos).split("-");
-            if(CodigoProductoABuscar.equals(productoEspecifico[0])){
+            if(CodigoProductoABuscar.equals(productoEspecifico[0].replace(" ",""))){
                 Existencias=Float.parseFloat(productoEspecifico[2]);
                 break;
             }
@@ -644,7 +644,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         Float Precio=Float.valueOf(0);
         for(int ContadorRecorreListaproductos=0;ContadorRecorreListaproductos<listaProductos.size();ContadorRecorreListaproductos++){
             String[] productoEspecifico=listaProductos.get(ContadorRecorreListaproductos).split("-");
-            if(CodigoProductoABuscar.equals(productoEspecifico[0])){
+            if(CodigoProductoABuscar.equals(productoEspecifico[0].replace(" ",""))){
                 Precio=Float.parseFloat(productoEspecifico[3]);
                 break;
             }
@@ -655,9 +655,9 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
     private void obtenerListaDias() {
         listadias=new ArrayList<String>();
         listadias.add("Seleccione");
-        listadias.add("5-dias");
-        listadias.add("10-dias");
+        listadias.add("7-dias");
         listadias.add("15-dias");
+        listadias.add("30-dias");
     }
 
     private void obtenerListaTipoPago() {
@@ -720,14 +720,22 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
             Float ca=Float.parseFloat(cantidad);
             Float descu=Float.parseFloat(Desc);
             Float preci=Float.parseFloat(precio);
+            Float precioReal=DevuelvePRecioProductoEspecifico(codigo);
+            Float descuentomoneda=Float.valueOf(0);
+            if(descu==0){
+                 descuentomoneda=Float.valueOf(0);
+            }else{
+                Float descuentoReal=descu/100;
+                descuentomoneda=(precioReal*ca)-((precioReal*ca)*descuentoReal);
+            }
             preci=preci/ca;
-            IngresarDetalleFacturaVenta(NFactura,codigoDetalle,ca,descu,preci);
+            IngresarDetalleFacturaVenta(NFactura,codigoDetalle,ca,descuentomoneda,preci);
             ContentValues cv = new ContentValues();
             Float total=DevuelveExistenciaProductoEspecifico(codigoSql);
             Float cantidadVendidad=Float.parseFloat(cantidad);
             Float nuevoCantidad=total-cantidadVendidad;
             cv.put(AyudanteCreacionBD.CAMPO_EXISTENCIA,nuevoCantidad);
-            db.update(AyudanteCreacionBD.TABLA_PRODUCTO, cv, AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+"="+codigoSql, null);
+            db.update(AyudanteCreacionBD.TABLA_PRODUCTO, cv, AyudanteCreacionBD.CAMPO_CODIGO_PRODUCTO+"= '"+codigoSql+"'", null);
 
             precio="";nombre="";cantidad="";codigo="";Desc="";codigoDetalle="";
 
@@ -748,7 +756,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         return NFactura;
     }
 
-    public void IngresarFacturaVenta(int TipoVenta,int TipoPago, String referencia, String fecha){
+    public void IngresarFacturaVenta(int TipoVenta,int TipoPago, String referencia, String fecha, int Cantidaddias){
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         int idClien=Integer.parseInt(idCliente.replaceAll(" ",""));
@@ -759,6 +767,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         values.put(AyudanteCreacionBD.CAMPO_N_REFERENCIA,referencia);
         values.put(AyudanteCreacionBD.CAMPO_MONTO_TOTAL,TotalPagar);
         values.put(AyudanteCreacionBD.CAMPO_FECHA,fecha);
+        values.put(AyudanteCreacionBD.CAMPO_CANTIDAD_DIAS,Cantidaddias);
         Long idResultante=db.insert(AyudanteCreacionBD.TABLA_FACTURA_VENTA,null,values);
         Toast.makeText(getApplicationContext(),"Se ingreso la factura con exito", Toast.LENGTH_LONG).show();
     }
