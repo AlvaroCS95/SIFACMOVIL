@@ -53,7 +53,7 @@ public class IngresarDiaActivity extends AppCompatActivity {
                     }
                 });
                 AlertDialog alertconfirmacionIniciardia=confirmacionIniciardia.create();
-                alertconfirmacionIniciardia.setTitle("Error");
+                alertconfirmacionIniciardia.setTitle("Confirmacion");
                 alertconfirmacionIniciardia.show();
 
 

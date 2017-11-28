@@ -95,13 +95,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:drawableLeft="@drawable/ic_launcher"
-    android:layout_marginTop="69dp"
+    android:layout_marginTop="41dp"
 
     android:layout_below="@+id/finalizardiaprincipal"
-    android:layout_toLeftOf="@+id/btListarFacturas"
-    android:layout_toStartOf="@+id/btListarFacturas"
-    android:layout_marginRight="43dp"
-    android:layout_marginEnd="43dp" />
+    android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="match_parent"
@@ -109,7 +106,7 @@
         android:textColor="@android:color/white"
         android:id="@+id/btInfo"
         android:backgroundTint="@color/colorButton"
-        android:drawableLeft="@drawable/ic_unarchive_white_18dp"
+        android:drawableLeft="@drawable/ic_info_outline_white_24dp"
         android:layout_alignParentBottom="true"
         android:text="Acerca de la Aplicación" />
 

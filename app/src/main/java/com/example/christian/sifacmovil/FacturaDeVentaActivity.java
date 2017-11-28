@@ -327,7 +327,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                             }
                                                         });
                                                 AlertDialog alerterrorMEnosdinero=errorMEnosdinero.create();
-                                                alerterrorMEnosdinero.setTitle("Confirmación de venta");
+                                                alerterrorMEnosdinero.setTitle("Error");
                                                 alerterrorMEnosdinero.show();
                                                 return;
                                             }else{//inicia el recorrido para ingresar la factura
@@ -521,7 +521,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                 }
                                             });
                                     AlertDialog alconfirmacioncredito=confirmacioncredito.create();
-                                    alconfirmacioncredito.setTitle("Confirmació");
+                                    alconfirmacioncredito.setTitle("Confirmación");
                                     alconfirmacioncredito.show();
 
                                 }
