@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:text="@string/TextoBotonIngresarLogin"
         android:textColor="@android:color/white"
-        android:background="@color/colorButton"
+        android:backgroundTint="@color/colorButton"
         android:layout_below="@+id/etContraseña"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />

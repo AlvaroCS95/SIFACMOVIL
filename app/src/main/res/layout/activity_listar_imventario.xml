@@ -19,7 +19,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/ActualizarInventario"
-        android:background="@color/colorButton"
+        android:backgroundTint="@color/colorButton"
         android:textColor="@android:color/white"
         android:text="@string/ActualizarInventario"
         android:layout_below="@+id/TextoListaInventario"

@@ -146,7 +146,7 @@ public class IngresarDiaActivity extends AppCompatActivity {
                     ayudantedireccion=ayudante[3].replace("]","");
                     values.put(AyudanteCreacionBD.CAMPO_DIRECCION,ayudantedireccion.replace("\"",""));
                     Long idResultante=db.insert(AyudanteCreacionBD.TABLA_CLIENTE,null,values);
-                    recojevalor+="Se ingreso id: "+ayudante[0].replace("[","")+"\n";
+                    recojevalor+="Se ingreso ciente: "+ayudante[1].replace("\"","")+"\n";
                 }
 
                 Toast.makeText(getApplicationContext(),recojevalor+"", Toast.LENGTH_LONG).show();
@@ -201,7 +201,7 @@ public class IngresarDiaActivity extends AppCompatActivity {
                     ayudanteExcento=ayudanteRecogeDatos[4].replace("]","");
                     values.put(AyudanteCreacionBD.CAMPO_EXCENTO,ayudanteExcento.replace("\"",""));
                     Long idResultante=db.insert(AyudanteCreacionBD.TABLA_PRODUCTO,null,values);
-                    recojevalor+="Se ingreso id: "+produ.replace("\"","")+"\n";
+                    recojevalor+="Se ingreso producto: "+produ.replace("\"","")+"\n";
                 }
 
                 Toast.makeText(getApplicationContext(),recojevalor+"", Toast.LENGTH_LONG).show();

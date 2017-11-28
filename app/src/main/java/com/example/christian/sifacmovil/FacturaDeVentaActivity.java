@@ -173,6 +173,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                         alert2.setTitle("Error");
                         alert2.show();
                     }else{
+                        descuentoPorcentaje=Float.valueOf(0);
                         String precio=producto[3].toString();
                         precioProducto =Float.parseFloat(precio);
                         if(etDescuento.getText().toString().equals("")){
@@ -611,8 +612,8 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                         }
                     });
             AlertDialog alconfirmaimprimir=confirmaimprimir.create();
-            confirmaimprimir.setTitle("Volver a imprimri");
-            confirmaimprimir.show();
+            alconfirmaimprimir.setTitle("Volver a imprimir");
+            alconfirmaimprimir.show();
         }catch (Exception e){
 
         }
@@ -722,7 +723,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
             Float preci=Float.parseFloat(precio);
             Float precioReal=DevuelvePRecioProductoEspecifico(codigo);
             Float descuentomoneda=Float.valueOf(0);
-            if(descu==0){
+            if(descu==0.0){
                  descuentomoneda=Float.valueOf(0);
             }else{
                 Float descuentoReal=descu/100;

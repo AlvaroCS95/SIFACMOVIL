@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:text="@string/AceptarNuevoUsuario"
         android:textColor="@android:color/white"
-        android:background="@color/colorButton"
+        android:backgroundTint="@color/colorButton"
         android:layout_below="@+id/etContraseñaNueva"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />

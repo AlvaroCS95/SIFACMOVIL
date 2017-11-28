@@ -12,7 +12,7 @@
         android:text="Ingresar"
         android:layout_marginTop="19dp"
         android:textColor="@android:color/white"
-        android:background="@color/colorButton"
+        android:backgroundTint="@color/colorButton"
         android:layout_below="@+id/btNuevoUsuario"
         android:layout_centerHorizontal="true"
         android:id="@+id/btIngresarDia"
