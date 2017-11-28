@@ -355,7 +355,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                                 String NFact=DevuelveUtilmoRegistro()+"";
                                                                 String abajoEncabezado="Tipo Venta: Contado\n" +
                                                                         "Tipo Pago: " +tipoPago+"\n" +
-                                                                        "Nombre del Cliente: \n"+NombreLocalImprimir+"\n"+
+                                                                        "N.Cli: "+NombreLocalImprimir+"\n"+
                                                                         "Factura # "+NFact+"-"+IngresarActivity.Usuario+"\n"+
                                                                         ""+formattedDate+"\n--------------------------------";
                                                                 String imprimir= IngresarVenta(NFact);
@@ -422,7 +422,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
                                                     String abajoEncabezado="Tipo Venta: Contado\n" +
                                                             "Tipo Pago: " +tipoPago+"\n"+
-                                                            "Nombre del Cliente: \n"+NombreLocalImprimir+"\n"+
+                                                            "N.Cli: "+NombreLocalImprimir+"\n"+
                                                             "Factura # "+NFac+"-"+IngresarActivity.Usuario+"\n"+
                                                             ""+formattedDate+"\n--------------------------------";
                                                     String imprimir= IngresarVenta(NFac);
@@ -496,7 +496,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                                     IngresarFacturaVenta(1,5,"",fechabd.replaceAll("/","-"),plazodias);
                                                     String NFact=DevuelveUtilmoRegistro()+"";
                                                     String abajoEncabezado="Tipo Venta: Credito\n" +
-                                                            "Nombre del Cliente: \n"+NombreLocalImprimir+"\n" +
+                                                            "N.Cli: "+NombreLocalImprimir+"\n" +
                                                             "Factura # "+NFact+"-"+IngresarActivity.Usuario+"\n"+
                                                             ""+formattedDate+"\n--------------------------------";
                                                     String Encabezado
@@ -682,7 +682,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
 
     public String IngresarVenta(String NFactura) {
         SQLiteDatabase db=conn.getReadableDatabase();
-        String Mostrar="\nCod   Tlt       Cant   Descr \n";
+        String Mostrar="\nCod   Tlt      Cant   Descr \n";
         String codigo="";
         String nombre="";
         String prueba="";
@@ -717,7 +717,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                     precio=currentCell.getText().toString();
                 }
             }
-            Mostrar+=codigo+"  "+precio+"   "+cantidad+"  "+nombre+"\n";
+            Mostrar+=codigo+"  "+precio+"  "+cantidad+"  "+nombre+"\n";
             Float ca=Float.parseFloat(cantidad);
             Float descu=Float.parseFloat(Desc);
             Float preci=Float.parseFloat(precio);

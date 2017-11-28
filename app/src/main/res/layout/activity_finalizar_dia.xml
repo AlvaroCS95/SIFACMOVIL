@@ -8,12 +8,13 @@
 
     <Button
         android:id="@+id/btfinalizardia"
-        android:layout_width="150dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:text="Finalizar dia"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/colorButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp" />
+        android:layout_marginTop="31dp"
+        android:drawableLeft="@drawable/ic_present_to_all_white_18dp"
+        android:backgroundTint="@color/colorButton"
+        android:text="Finalizar dia"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>

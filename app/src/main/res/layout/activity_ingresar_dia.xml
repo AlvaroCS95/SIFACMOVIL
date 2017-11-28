@@ -7,15 +7,15 @@
     tools:context="com.example.christian.sifacmovil.IngresarDiaActivity">
 
     <Button
-        android:layout_width="150dp"
+        android:id="@+id/btIngresarDia"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Ingresar"
-        android:layout_marginTop="19dp"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/colorButton"
         android:layout_below="@+id/btNuevoUsuario"
         android:layout_centerHorizontal="true"
-        android:id="@+id/btIngresarDia"
-        />
+        android:layout_marginTop="19dp"
+        android:drawableLeft="@android:drawable/stat_sys_download"
+        android:backgroundTint="@color/colorButton"
+        android:text="Ingresar"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>

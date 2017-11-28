@@ -16,10 +16,11 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:id="@+id/ActualizarInventario"
         android:backgroundTint="@color/colorButton"
+        android:drawableLeft="@android:drawable/stat_notify_sync"
         android:textColor="@android:color/white"
         android:text="@string/ActualizarInventario"
         android:layout_below="@+id/TextoListaInventario"

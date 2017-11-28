@@ -144,13 +144,13 @@
         android:id="@+id/btAgregarProducto"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:text="Agregar"
         android:backgroundTint="@color/colorButton"
+        android:drawableLeft="@android:drawable/ic_menu_add"
+        android:text="Agregar"
         android:textColor="@android:color/white"
-        android:layout_alignBaseline="@+id/MontoTotalAPagar"
         android:layout_alignBottom="@+id/MontoTotalAPagar"
-        android:layout_alignLeft="@+id/btRealizarVenta"
-        android:layout_alignStart="@+id/btRealizarVenta" />
+        android:layout_toRightOf="@+id/prueba234"
+        android:layout_toEndOf="@+id/prueba234" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -174,12 +174,16 @@
 
         </TableLayout>
     </ScrollView>
+
     <Button
         android:id="@+id/btRealizarVenta"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="Vender"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginStart="7dp"
         android:backgroundTint="@color/colorButton"
+        android:drawableLeft="@drawable/ic_done_white_18dp"
+        android:text="Vender"
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/prueba234"

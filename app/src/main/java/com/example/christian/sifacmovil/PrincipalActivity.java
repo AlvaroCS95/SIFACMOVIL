@@ -35,7 +35,7 @@ import com.example.christian.sifacmovil.Modelos.Producto;
 
 public class PrincipalActivity extends AppCompatActivity {
 
-    Button btIngresarCliente, btempezardia, btnuevousuario, btconsultarinventario,btListarFacturas,finalizardiaprincipal;
+    Button btIngresarCliente, btempezardia, btnuevousuario, btconsultarinventario,btListarFacturas,finalizardiaprincipal,btInfo;
 
 
     @Override
@@ -51,7 +51,7 @@ public class PrincipalActivity extends AppCompatActivity {
         btconsultarinventario= (Button) findViewById(R.id.btInventario);
         btListarFacturas=(Button) findViewById(R.id.btListarFacturas);
         finalizardiaprincipal=(Button) findViewById(R.id.finalizardiaprincipal);
-
+        btInfo=(Button) findViewById(R.id.btInfo);
         btIngresarCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +83,19 @@ public class PrincipalActivity extends AppCompatActivity {
 
                 try {
                     Intent ListSong = new Intent(getApplicationContext(), ListarImventarioActivity.class);
+                    startActivity(ListSong);
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"No se puede ir a consultar inventario", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    Intent ListSong = new Intent(getApplicationContext(), InfoActivity.class);
                     startActivity(ListSong);
                 }catch (Exception e){
                     Toast.makeText(getApplicationContext(),"No se puede ir a consultar inventario", Toast.LENGTH_LONG).show();

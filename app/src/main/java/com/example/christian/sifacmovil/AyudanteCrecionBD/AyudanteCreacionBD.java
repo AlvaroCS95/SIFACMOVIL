@@ -24,7 +24,7 @@ public class AyudanteCreacionBD {
 
 
     public static final String CREAR_TABLA_CLIENTE="CREATE TABLE " +
-            ""+TABLA_CLIENTE+" ("+CAMPO_ID_CLIENTE+" INTEGER, "
+            ""+TABLA_CLIENTE+" ("+CAMPO_ID_CLIENTE+" INTEGER , "
             +CAMPO_NIVEL+" TEXT, "+CAMPO_NOMBRE_LOCAL+" TEXT, "+CAMPO_DIRECCION+" TEXT)";
 
     //Constantes campos tabla Producto

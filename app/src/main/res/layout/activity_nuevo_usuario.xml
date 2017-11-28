@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:text="@string/AceptarNuevoUsuario"
         android:textColor="@android:color/white"
+        android:drawableLeft="@drawable/ic_perm_contact_calendar_white_18dp"
         android:backgroundTint="@color/colorButton"
         android:layout_below="@+id/etContraseñaNueva"
         android:layout_centerHorizontal="true"

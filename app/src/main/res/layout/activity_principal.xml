@@ -8,72 +8,109 @@
 
     <Button
         android:id="@+id/btIngresarClientes"
-        android:layout_width="230dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorButton"
+        android:drawableLeft="@drawable/ic_archive_white_18dp"
         android:textColor="@android:color/white"
         android:text="@string/IngresarClientesCargas"
         tools:layout_editor_absoluteX="99dp"
         tools:layout_editor_absoluteY="57dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="8dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/btEmpezarDia"
+        android:layout_alignStart="@+id/btEmpezarDia"
+        android:layout_alignRight="@+id/btNuevoUsuario"
+        android:layout_alignEnd="@+id/btNuevoUsuario" />
 
     <Button
         android:id="@+id/btEmpezarDia"
-        android:layout_width="155dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:text="@string/Iniciardia"
+        android:drawableLeft="@android:drawable/ic_dialog_map"
         tools:layout_editor_absoluteX="146dp"
         android:textColor="@android:color/white"
         tools:layout_editor_absoluteY="449dp"
         android:backgroundTint="@color/colorButton"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="7dp"
         android:layout_below="@+id/btIngresarClientes"
-        android:layout_centerHorizontal="true" />
+        android:layout_toLeftOf="@+id/btListarFacturas"
+        android:layout_toStartOf="@+id/btListarFacturas" />
 
 <Button
-    android:layout_width="185dp"
+    android:layout_width="220dp"
     android:layout_height="wrap_content"
     android:text="@string/ConsultarInventario"
-    android:layout_marginTop="28dp"
     android:textColor="@android:color/white"
-    android:layout_below="@+id/btEmpezarDia"
-    android:layout_centerHorizontal="true"
+    android:drawableLeft="@drawable/ic_content_paste_white_18dp"
     android:backgroundTint="@color/colorButton"
-    android:id="@+id/btInventario" />
+    android:id="@+id/btInventario"
+    android:layout_below="@+id/btListarFacturas"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_marginTop="12dp" />
 
     <Button
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:text="@string/IngresarNuevoUsuario"
-        android:layout_marginTop="26dp"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/colorButton"
-        android:layout_below="@+id/btInventario"
-        android:layout_alignRight="@+id/btEmpezarDia"
-        android:layout_alignEnd="@+id/btEmpezarDia"
-        android:id="@+id/btNuevoUsuario"/>
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Facturas Venta"
-        android:layout_marginTop="19dp"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/colorButton"
-        android:layout_below="@+id/btNuevoUsuario"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/btListarFacturas"/>
+        android:drawableLeft="@drawable/ic_account_circle_white_18dp"
+        android:id="@+id/btNuevoUsuario"
+        android:layout_alignTop="@+id/btInventario"
+        android:layout_toRightOf="@+id/btInventario"
+        android:layout_toEndOf="@+id/btInventario" />
 
     <Button
-        android:layout_width="150dp"
+        android:id="@+id/btListarFacturas"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorButton"
+        android:drawableLeft="@drawable/ic_list_white_18dp"
+        android:text="Facturas Venta"
+        android:textColor="@android:color/white"
+        android:layout_alignBaseline="@+id/btEmpezarDia"
+        android:layout_alignBottom="@+id/btEmpezarDia"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Finalizar dia"
-        android:layout_marginTop="19dp"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/colorButton"
-        android:layout_below="@+id/btListarFacturas"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/finalizardiaprincipal"/>
+        android:drawableLeft="@drawable/ic_unarchive_white_18dp"
+        android:id="@+id/finalizardiaprincipal"
+        android:layout_marginRight="68dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/btInventario"
+        android:layout_alignRight="@+id/btNuevoUsuario"
+        android:layout_alignEnd="@+id/btNuevoUsuario" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/ic_launcher"
+    android:layout_marginTop="69dp"
+
+    android:layout_below="@+id/finalizardiaprincipal"
+    android:layout_toLeftOf="@+id/btListarFacturas"
+    android:layout_toStartOf="@+id/btListarFacturas"
+    android:layout_marginRight="43dp"
+    android:layout_marginEnd="43dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:id="@+id/btInfo"
+        android:backgroundTint="@color/colorButton"
+        android:drawableLeft="@drawable/ic_unarchive_white_18dp"
+        android:layout_alignParentBottom="true"
+        android:text="Acerca de la Aplicación" />
 
 </RelativeLayout>

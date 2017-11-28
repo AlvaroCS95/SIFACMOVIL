@@ -42,8 +42,8 @@ public class IngresarDiaActivity extends AppCompatActivity {
                         .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                new AyudanteRecogerNumeroProductos().execute("http://192.168.43.199:8080/SifacMyF/DevuelveCuantosRegistros.php");
-                                new AyudanteRecogerNumeroClientes().execute("http://192.168.43.199:8080/SifacMyF/DevuelveCuantosRegistrosClientes.php");
+                                new AyudanteRecogerNumeroProductos().execute("http://192.168.43.199:8080/SifacMyF/DevuelveCuantosRegistros.php?usuario="+IngresarActivity.IdUsuario);
+                                new AyudanteRecogerNumeroClientes().execute("http://192.168.43.199:8080/SifacMyF/DevuelveCuantosRegistrosClientes.php?usuario="+IngresarActivity.IdUsuario);
 
                             }
                         }).setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -89,16 +89,16 @@ public class IngresarDiaActivity extends AppCompatActivity {
                 registro=Integer.parseInt(valor);
                 int calcular=0;
                 while(registro>0){
-                    new AyudanteListarClientes().execute("http://192.168.43.199:8080/SifacMyF/listarClientes.php?x="+calcular+"&y=5");
+                    new AyudanteListarClientes().execute("http://192.168.43.199:8080/SifacMyF/listarClientes.php?x="+calcular+"&y=5&usuario="+IngresarActivity.IdUsuario);
                     calcular+=5;
                     registro=registro-5;
 
                 }
 
-
+                new AyudanteActualizarCarga().execute("http://192.168.43.199:8080/SifacMyF/CambiarEstadoCarga.php?usuario="+IngresarActivity.IdUsuario);
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Error\nNO se pudo realizar", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error\nNO se pudo realizar ", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -153,7 +153,7 @@ public class IngresarDiaActivity extends AppCompatActivity {
                 //db.close();
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Error\nNO se pudo realizar", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error\nNO se pudo realizar ", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -239,7 +239,7 @@ public class IngresarDiaActivity extends AppCompatActivity {
                 registro=Integer.parseInt(valor);
                 int calcular=0;
                   while(registro>0){
-                      new AyudanteRecogerProductos().execute("http://192.168.43.199:8080/SifacMyF/listarProductosDeRuta.php?x="+calcular+"&y=5");
+                      new AyudanteRecogerProductos().execute("http://192.168.43.199:8080/SifacMyF/listarProductosDeRuta.php?x="+calcular+"&y=5&usuario="+IngresarActivity.IdUsuario);
                       calcular+=5;
                       registro=registro-5;
 
@@ -248,12 +248,30 @@ public class IngresarDiaActivity extends AppCompatActivity {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Error\nNO se pudo realizar", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error\nNO se pudo realizar ", Toast.LENGTH_LONG).show();
                 return;
             }
 
         }
     }
 
+    private class AyudanteActualizarCarga extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
 
+            // params comes from the execute() call: params[0] is the url.
+            try {
+                return ayudanteConeccionMySql.downloadUrl(urls[0]);
+            } catch (IOException e) {
+                return "Unable to retrieve web page. URL may be invalid.";
+            }
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(), "Se ingreso con exito", Toast.LENGTH_LONG).show();
+
+
+        }
+    }
 }

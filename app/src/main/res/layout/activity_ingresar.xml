@@ -43,10 +43,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/TextoBotonIngresarLogin"
+        android:drawableLeft="@drawable/ic_lock_outline_white_24dp"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/colorButton"
         android:layout_below="@+id/etContraseña"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:drawableLeft="@drawable/ic_launcher"
+        android:layout_below="@+id/btIngresar"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_copyright_black_24dp"
+        android:layout_marginBottom="7dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/tvLogin"
+        android:layout_toStartOf="@+id/tvLogin" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SIFACMYF"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp" />
 
 </RelativeLayout>
