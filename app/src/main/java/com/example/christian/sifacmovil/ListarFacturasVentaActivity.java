@@ -26,7 +26,7 @@ public class ListarFacturasVentaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_facturas_venta);
-        setTitle("Faturad de Venta");
+        setTitle("Faturas de Venta");
         Actualizarfacturas=(Button)findViewById(R.id.ActualizarFacturas);
         listaFacturaVenta = (ListView)findViewById(R.id.ListaFacturasVenta);
         listaFacturas = new ArrayList<>();

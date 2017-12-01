@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -93,6 +94,11 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Bundle bundle=getIntent().getExtras();
+        idCliente=bundle.getString("NCliente");
+        NombreLocalImprimir=bundle.getString("Nombre");
+        setTitle("Facturar "+ NombreLocalImprimir.replaceAll(" ",""));
         setContentView(R.layout.activity_factura_de_venta);
         listaDeProductos=(Spinner)findViewById(R.id.spinnerListaProductos);
         ListadeDias=(Spinner)findViewById(R.id.spinnerPlazoDías);
@@ -109,11 +115,9 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
         TotalPagaCliente=(EditText)findViewById(R.id.etMontodePagoTotalCliente);
         DetalleFacturaVenta=(TableLayout)findViewById(R.id.DetalleFacturaVenta);
         DetalleFacturaVenta.setClickable(true);
-        Bundle bundle=getIntent().getExtras();
         dato="";
         text.setText(bundle.getString("NCliente")+" - Nombre Cliente: "+bundle.getString("Nombre"));
-        idCliente=bundle.getString("NCliente");
-        NombreLocalImprimir=bundle.getString("Nombre");
+
         consultarListaProductos();
         obtenerListaDias();
         obtenerListaTipoPago();
@@ -318,7 +322,7 @@ public class FacturaDeVentaActivity extends AppCompatActivity {
                                             totalQuePagaCliente=Float.parseFloat(TotalPagaCliente.getText().toString());
                                             if(totalQuePagaCliente<TotalPagar){//inicio if si lo que el cliente dio es menor a lo que tiene que pagar
                                                 AlertDialog.Builder errorMEnosdinero= new AlertDialog.Builder(FacturaDeVentaActivity.this);
-                                                errorMEnosdinero.setMessage("Esta ingresando una cantidaad menor a la que el clinete debe")
+                                                errorMEnosdinero.setMessage("Esta ingresando una cantidad menor a la que el cliente debe")
                                                         .setCancelable(false)
                                                         .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
                                                             @Override

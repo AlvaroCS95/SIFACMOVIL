@@ -10,7 +10,7 @@
         android:id="@+id/textView8"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:text="SifacMyf es una app de facturación creada por estudiantes de cuarto año la carrera de InformaticaEmpresarial como la practica, para la Distribuidora MyF\n2017\nUCR"
+        android:text="SifacMyf es una app de facturación creada por estudiantes de cuarto año la carrera de Informatica Empresarial como la practica, para la Distribuidora MyF\n2017\nUCR"
         tools:layout_editor_absoluteY="55dp"
         tools:layout_editor_absoluteX="0dp"
         android:layout_marginTop="27dp"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Estudiantes\n
-AlvaroCarranza\n
+Alvaro Carranza\n
 Laura García\n
 Dayana Carrillo\n
 Christian Madrigal"

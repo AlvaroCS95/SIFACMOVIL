@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -45,6 +47,7 @@ public class FinalizarDiaActivity extends AppCompatActivity {
     ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
     ConexionSQLiteHelper conn2=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
     Button finalizardia;
+    EditText usuario, contraseña;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,60 +55,30 @@ public class FinalizarDiaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_finalizar_dia);
         setTitle("Finalizar día");
         finalizardia=(Button)findViewById(R.id.btfinalizardia);
+        usuario=(EditText)findViewById(R.id.etNombreUsuarioFinalizarDia);
+        contraseña=(EditText)findViewById(R.id.etContraseñaFinalizarDia);
         finalizardia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder confirmacionfinalizardia= new AlertDialog.Builder(FinalizarDiaActivity.this);
-                confirmacionfinalizardia.setMessage("Seguro que desea finalizar el dia")
-                        .setCancelable(false)
-                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String Encabezado
-                                        = "\n\t        Distribuidora MyF\n"
-                                        + "\t  Aramed de Jesus Sequeira Vega\n"
-                                        + "\t\t      Cedula: 5-256-190\n"
-                                        + "\t   Tels: 83031359 / 88197499\n"
-                                        + "\t  Email: aramedsequeira@yahoo.es\n"
-                                        + "\t\t\t       Nicoya, Guanacaste\n"
-                                        + "--------------------------------\n";
-                                Calendar c = Calendar.getInstance();
-                                SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                                String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
-                                String Descuento="--------------------------------\n" +
-                                        "              *Fin*              ";
-                                String abajoEncabezado="Informe de productos ingresados nuevamente\n" +
-                                        "en el inventario."+formattedDate+"\n" +
-                                        "--------------------------------\n" +
-                                        "Lista de productos";
-                                new AyudanteRecogerNumeroMaximoFactura().execute("http://192.168.43.199:8080/Sifacmyf/DevolverUltimoIdFacturaVenta.php");
-                                String imprimir= ActualizarInventario();
-                                MandarImprimir(Encabezado,abajoEncabezado,imprimir,Descuento);
-                                AlertDialog.Builder confirmacionfinal= new AlertDialog.Builder(FinalizarDiaActivity.this);
-                                confirmacionfinal.setMessage("Se realizo la accion con exito")
-                                        .setCancelable(false)
-                                        .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
 
-                                               VaciasBdSQLite();
+                if(usuario.getText().toString().equals("")||contraseña.getText().toString().equals("")){
+                    AlertDialog.Builder errr= new AlertDialog.Builder(FinalizarDiaActivity.this);
+                    errr.setMessage("Debe ingresar todos los campos")
+                            .setCancelable(false)
+                            .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                            }
-                                        });
-                                AlertDialog alertconfirmacionfinal=confirmacionfinal.create();
-                                alertconfirmacionfinal.setTitle("Información");
-                                alertconfirmacionfinal.show();
+                                  return;
 
-                            }
-                        }).setNegativeButton("No",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-                AlertDialog alertconfirmacionfinalizardia=confirmacionfinalizardia.create();
-                alertconfirmacionfinalizardia.setTitle("Final dia");
-                alertconfirmacionfinalizardia.show();
+                                }
+                            });
+                    AlertDialog alererrr=errr.create();
+                    alererrr.setTitle("Error");
+                    alererrr.show();
+                } else{//termina si no tiene nada ingresado en el usuario y contraseña
+                    new AyudanteNuevoUsuario().execute("http://192.168.43.199:8080/Sifacmyf/IngresarNuevoUsuario.php?nombreUsuario="+usuario.getText().toString()+"&pass="+contraseña.getText().toString());
+                }
 
 
 
@@ -263,6 +236,107 @@ public class FinalizarDiaActivity extends AppCompatActivity {
             sendData(Descuento);
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error\nNo se imprimio", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class AyudanteNuevoUsuario extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            // params comes from the execute() call: params[0] is the url.
+            try {
+                return ayudanteConeccionMySql.downloadUrl(urls[0]);
+            } catch (IOException e) {
+                return "Unable to retrieve web page. URL may be invalid.";
+            }
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            SQLiteDatabase db=conn.getWritableDatabase();
+            JSONArray ja = null;
+            try {
+                ja = new JSONArray(result);
+                String valor="";
+                String usuario=ja.getString(1).replace("\"","");
+                String contraseña=ja.getString(2).replace("]","");
+                String ayudantecontra=contraseña.replace("\"","");
+                if(usuario.equals(IngresarActivity.Usuario)&ayudantecontra.equals(IngresarActivity.Contraseña)){
+                    AlertDialog.Builder confirmacionfinalizardia= new AlertDialog.Builder(FinalizarDiaActivity.this);
+                    confirmacionfinalizardia.setMessage("Seguro que desea finalizar el dia")
+                            .setCancelable(false)
+                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String Encabezado
+                                            = "\n\t        Distribuidora MyF\n"
+                                            + "\t  Aramed de Jesus Sequeira Vega\n"
+                                            + "\t\t      Cedula: 5-256-190\n"
+                                            + "\t   Tels: 83031359 / 88197499\n"
+                                            + "\t  Email: aramedsequeira@yahoo.es\n"
+                                            + "\t\t\t       Nicoya, Guanacaste\n"
+                                            + "--------------------------------\n";
+                                    Calendar c = Calendar.getInstance();
+                                    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                    String formattedDate ="Fecha-Hora: "+ df.format(c.getTime())+"\n";
+                                    String Descuento="--------------------------------\n" +
+                                            "              *Fin*              ";
+                                    String abajoEncabezado="Informe de productos ingresados\n nuevamente" +
+                                            "en el inventario.\n"+formattedDate+"\n" +
+                                            "--------------------------------\n" +
+                                            "Lista de productos";
+                                    new AyudanteRecogerNumeroMaximoFactura().execute("http://192.168.43.199:8080/Sifacmyf/DevolverUltimoIdFacturaVenta.php");
+                                    String imprimir="";
+                                    imprimir = ActualizarInventario();
+                                    AlertDialog.Builder confirmacionfinal= new AlertDialog.Builder(FinalizarDiaActivity.this);
+                                    confirmacionfinal.setMessage("Se realizo la accion con exito")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    VaciasBdSQLite();
+
+                                                }
+                                            });
+                                    AlertDialog alertconfirmacionfinal=confirmacionfinal.create();
+                                    alertconfirmacionfinal.setTitle("Información");
+                                    alertconfirmacionfinal.show();
+                                    MandarImprimir(Encabezado,abajoEncabezado,imprimir,Descuento);
+                                }
+                            }).setNegativeButton("No",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    });
+                    AlertDialog alertconfirmacionfinalizardia=confirmacionfinalizardia.create();
+                    alertconfirmacionfinalizardia.setTitle("Final dia");
+                    alertconfirmacionfinalizardia.show();
+                }else{
+                    AlertDialog.Builder errr2= new AlertDialog.Builder(FinalizarDiaActivity.this);
+                    errr2.setMessage("Ussuario y contrasea no coinciden con los datos del usuario activo")
+                            .setCancelable(false)
+                            .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    return;
+
+                                }
+                            });
+                    AlertDialog alererrrerrr2=errr2.create();
+                    alererrrerrr2.setTitle("Error");
+                    alererrrerrr2.show();
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Por favor para realizar esta accion debe de estar cerca de MyF", Toast.LENGTH_LONG).show();
+                return;
+            }
+
         }
     }
 
